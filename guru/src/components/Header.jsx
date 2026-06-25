@@ -3,7 +3,7 @@ import { Link, useLocation, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { userState } from "../store/userStore";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
 import { useAuth } from "../assets/AuthContext";
 import Modal from "../components/Modal";
 import ModalAlert from "../components/ModalAlert";
@@ -32,6 +32,19 @@ const Header = () => {
         const token = localStorage.getItem("token");
         if (!token) {
           console.warn("로그인하지 않은 상태입니다.");
+          setLoading(false);
+          return;
+        }
+        if (isMockMode) {
+          dispatch(
+            userState({
+              emailID: "mock@guru.local",
+              userName: "임시사용자",
+              nickName: "Mock User",
+              certified: true,
+              auth: "user",
+            })
+          );
           setLoading(false);
           return;
         }
@@ -99,6 +112,14 @@ const Header = () => {
 
   const logout = async (e) => {
     e.preventDefault();
+    if (isMockMode) {
+      localStorage.removeItem("token");
+      setVisible(false);
+      dispatch(userState(null));
+      isLogout();
+      window.location.href = "/";
+      return;
+    }
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`${url}/logout`, {

@@ -1,5 +1,5 @@
 import { Link, Navigate } from "react-router-dom";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
 import { useState } from "react";
 import { useAuth } from "../assets/AuthContext";
 import form from "../css/Form.module.css";
@@ -13,7 +13,7 @@ const Login = () => {
   const [redirect, setRedirect] = useState(false);
   const [modalAlert, setModalAlert] = useState(null);
   const { islogin } = useAuth();
-  const isDev = process.env.NODE_ENV === "development";
+  const isDev = process.env.NODE_ENV === "development" || isMockMode;
   const devUser = {
     emailID: "test@guru.local",
     password: "1234",
@@ -58,6 +58,11 @@ const Login = () => {
   };
 
   const devLogin = async () => {
+    if (isMockMode) {
+      completeLogin({ token: "mock-token" });
+      return;
+    }
+
     try {
       const signupResponse = await fetch(`${url}/signup`, {
         method: "POST",

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
 import Loading from "../components/Loading";
 const AuthContext = createContext();
 
@@ -11,6 +11,11 @@ export function AuthProvider({ children }) {
     const verifyToken = async () => {
       const token = localStorage.getItem("token");
       if (token) {
+        if (isMockMode) {
+          setIsAuthenticated(true);
+          setLoading(false);
+          return;
+        }
         try {
           const response = await fetch(`${url}/verify-token`, {
             method: "POST",
