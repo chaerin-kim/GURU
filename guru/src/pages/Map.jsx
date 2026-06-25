@@ -5,8 +5,7 @@ import { isMockMode, url } from "../store/ref";
 import { getMockUser } from "../mock/jobs";
 import styles from "../css/Map.module.css";
 
-// Kakao Maps API 스크립트를 동적으로 추가하는 함수
-const loadKakaoMapScript = (callback) => {
+const loadKakaoMapScript = (callback, onError) => {
   if (window.kakao && window.kakao.maps) {
     window.kakao.maps.load(callback);
     return;
@@ -14,7 +13,7 @@ const loadKakaoMapScript = (callback) => {
 
   const appKey = process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY;
   if (!appKey) {
-    console.error("Missing REACT_APP_MAP_JAVASCRIPT_APPKEY. Kakao map will not be loaded.");
+    onError?.();
     return;
   }
 
@@ -23,8 +22,11 @@ const loadKakaoMapScript = (callback) => {
     existingScript.addEventListener("load", () => {
       if (window.kakao && window.kakao.maps) {
         window.kakao.maps.load(callback);
+      } else {
+        onError?.();
       }
     });
+    existingScript.addEventListener("error", () => onError?.());
     return;
   }
 
@@ -37,27 +39,26 @@ const loadKakaoMapScript = (callback) => {
     if (window.kakao && window.kakao.maps) {
       window.kakao.maps.load(callback);
     } else {
-      console.error("Failed to load Kakao Maps API.");
+      onError?.();
     }
   };
-  script.onerror = () => {
-    console.error("Error loading Kakao Maps API script.");
-  };
+  script.onerror = () => onError?.();
   document.head.appendChild(script);
 };
 
-// 날짜 포맷 함수
 const formatDate = (dateString) => {
   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
   return new Date(dateString).toLocaleDateString("ko-KR", options);
 };
 
-const Map = ({ jobList, location }) => {
+const Map = ({ jobList = [], location = {} }) => {
   const navigate = useNavigate();
   const [map, setMap] = useState(null);
+  const [mapFailed, setMapFailed] = useState(false);
   const [markers, setMarkers] = useState([]);
   const [samePositionJobs, setSamePositionJobs] = useState([]);
   const hasMapKey = Boolean(process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY);
+  const shouldShowMockMap = isMockMode || !hasMapKey || mapFailed;
 
   const findSamePositionJobs = useCallback((jobs) => {
     const samePositions = [];
@@ -67,9 +68,7 @@ const Map = ({ jobList, location }) => {
       const jobPos = `${job.location.mapX},${job.location.mapY}`;
       if (checkedPositions.has(jobPos)) return;
 
-      const sameJobs = jobs.filter((otherJob, otherIndex) => {
-        return index !== otherIndex && job.location.mapX === otherJob.location.mapX && job.location.mapY === otherJob.location.mapY;
-      });
+      const sameJobs = jobs.filter((otherJob, otherIndex) => index !== otherIndex && job.location.mapX === otherJob.location.mapX && job.location.mapY === otherJob.location.mapY);
 
       if (sameJobs.length > 0) {
         samePositions.push([job, ...sameJobs]);
@@ -82,27 +81,29 @@ const Map = ({ jobList, location }) => {
 
   useEffect(() => {
     setSamePositionJobs(findSamePositionJobs(jobList));
-    //console.log(samePositionJobs);
   }, [jobList, findSamePositionJobs]);
 
   useEffect(() => {
-    if (!hasMapKey) return;
+    if (shouldShowMockMap) return;
 
-    loadKakaoMapScript(() => {
-      const mapContainer = document.getElementById("map");
-      if (!mapContainer) {
-        console.error("Map container not found");
-        return;
-      }
-      const mapOption = {
-        center: new kakao.maps.LatLng(location.lat, location.lon),
-        level: 3,
-      };
+    loadKakaoMapScript(
+      () => {
+        const mapContainer = document.getElementById("map");
+        if (!mapContainer) {
+          setMapFailed(true);
+          return;
+        }
 
-      const mapInstance = new kakao.maps.Map(mapContainer, mapOption);
-      setMap(mapInstance);
-    });
-  }, [hasMapKey, location.lat, location.lon]);
+        const mapOption = {
+          center: new kakao.maps.LatLng(location.lat, location.lon),
+          level: 3,
+        };
+
+        setMap(new kakao.maps.Map(mapContainer, mapOption));
+      },
+      () => setMapFailed(true)
+    );
+  }, [shouldShowMockMap, location.lat, location.lon]);
 
   useEffect(() => {
     if (map) {
@@ -128,34 +129,32 @@ const Map = ({ jobList, location }) => {
     }
   };
 
-  const createOverlayContent = (job, imgSrc, workStartDate, workEndDate, isSamePositionJob, groupContent, groupIndex) => {
-    return `
-      <div class="${styles.wrap}">
-        <div class="${styles.info}">
-          <div class="${styles.title}">
-            ${isSamePositionJob ? `총 ${samePositionJobs[groupIndex].length} 건의 일자리` : job.title}
-            <i class="fa-solid fa-xmark ${styles.close}" title="닫기"></i>
-          </div>
-          <div class="${styles.body} ${isSamePositionJob ? styles.positionJob : ""}">
-            ${
-              isSamePositionJob
-                ? groupContent
-                : `
-              <div class="${styles.img}">
-                <img src="${imgSrc}">
-              </div>
-              <div class="${styles.desc}">
-                <div class="${styles.ellipsis}">${job.location.address}</div>
-                <div class="${styles.jibun}">${workStartDate} ~ ${workEndDate}</div>
-                <div><a href="#" class="${styles.link}" data-id="${job._id}">리스트로 이동 ></a></div>
-              </div>
-            `
-            }
-          </div>
+  const createOverlayContent = (job, imgSrc, workStartDate, workEndDate, isSamePositionJob, groupContent, groupIndex) => `
+    <div class="${styles.wrap}">
+      <div class="${styles.info}">
+        <div class="${styles.title}">
+          ${isSamePositionJob ? `${samePositionJobs[groupIndex].length} jobs` : job.title}
+          <i class="fa-solid fa-xmark ${styles.close}" title="Close"></i>
+        </div>
+        <div class="${styles.body} ${isSamePositionJob ? styles.positionJob : ""}">
+          ${
+            isSamePositionJob
+              ? groupContent
+              : `
+                <div class="${styles.img}">
+                  <img src="${imgSrc}" alt="">
+                </div>
+                <div class="${styles.desc}">
+                  <div class="${styles.ellipsis}">${job.location.address}</div>
+                  <div class="${styles.jibun}">${workStartDate} ~ ${workEndDate}</div>
+                  <div><a href="#" class="${styles.link}" data-id="${job._id}">Go to listing ></a></div>
+                </div>
+              `
+          }
         </div>
       </div>
-    `;
-  };
+    </div>
+  `;
 
   const createMarker = useCallback(
     async (job) => {
@@ -175,13 +174,13 @@ const Map = ({ jobList, location }) => {
         groupIndex >= 0
           ? samePositionJobs[groupIndex]
               .map(
-                (grouplist, index) => `
-              <div class="${styles.jobItem}" key="${index}">
-                <div class="${styles.sametitle}">${grouplist.title}</div>
-                <div class="${styles.samejibun}">${formatDate(grouplist.workStartDate)} ~ ${formatDate(grouplist.workEndDate)}</div>
-                <div><a href="#" class="${styles.link}" data-id="${grouplist._id}">리스트로 이동 ></a></div>
-              </div>
-            `
+                (grouplist) => `
+                  <div class="${styles.jobItem}">
+                    <div class="${styles.sametitle}">${grouplist.title}</div>
+                    <div class="${styles.samejibun}">${formatDate(grouplist.workStartDate)} ~ ${formatDate(grouplist.workEndDate)}</div>
+                    <div><a href="#" class="${styles.link}" data-id="${grouplist._id}">Go to listing ></a></div>
+                  </div>
+                `
               )
               .join("")
           : "";
@@ -191,7 +190,7 @@ const Map = ({ jobList, location }) => {
         position: marker.getPosition(),
       });
 
-      kakao.maps.event.addListener(marker, "click", function () {
+      kakao.maps.event.addListener(marker, "click", () => {
         overlay.setMap(map);
       });
 
@@ -201,7 +200,7 @@ const Map = ({ jobList, location }) => {
         link.addEventListener("click", (e) => {
           e.preventDefault();
           const jobId = e.target.getAttribute("data-id");
-          navigate(`/job-detail`, { state: { _id: jobId } });
+          navigate("/job-detail", { state: { _id: jobId } });
         })
       );
 
@@ -213,7 +212,7 @@ const Map = ({ jobList, location }) => {
   useEffect(() => {
     if (map && jobList.length > 0) {
       const clusterer = new kakao.maps.MarkerClusterer({
-        map: map,
+        map,
         averageCenter: true,
         minLevel: 2.6,
       });
@@ -229,18 +228,50 @@ const Map = ({ jobList, location }) => {
     }
   }, [map, jobList, createMarker, markers.length]);
 
-  return (
-    <div>
-      {hasMapKey ? (
-        <div id="map" className={styles.map}></div>
-      ) : (
-        <div className={styles.mapFallback}>
-          <strong>지도를 표시할 수 없습니다.</strong>
-          <span>카카오 지도 앱키가 설정되면 이 영역에 지도가 표시됩니다.</span>
+  if (shouldShowMockMap) {
+    const validJobs = jobList.filter((job) => job.location?.mapX && job.location?.mapY);
+    const baseLon = Number(location.lon || 126.965706);
+    const baseLat = Number(location.lat || 37.529325);
+    const xValues = validJobs.map((job) => Number(job.location.mapX));
+    const yValues = validJobs.map((job) => Number(job.location.mapY));
+    const minX = Math.min(...xValues, baseLon);
+    const maxX = Math.max(...xValues, baseLon);
+    const minY = Math.min(...yValues, baseLat);
+    const maxY = Math.max(...yValues, baseLat);
+    const rangeX = maxX - minX || 0.01;
+    const rangeY = maxY - minY || 0.01;
+
+    return (
+      <div className={styles.mockMap} aria-label="Demo job map">
+        <div className={styles.mockGrid}></div>
+        <div className={styles.mockRoadPrimary}></div>
+        <div className={styles.mockRoadSecondary}></div>
+        {validJobs.map((job) => {
+          const left = 12 + ((Number(job.location.mapX) - minX) / rangeX) * 76;
+          const top = 78 - ((Number(job.location.mapY) - minY) / rangeY) * 62;
+
+          return (
+            <button
+              key={job._id}
+              type="button"
+              className={styles.mockMarker}
+              style={{ left: `${left}%`, top: `${top}%` }}
+              title={job.title}
+              onClick={() => navigate("/job-detail", { state: { _id: job._id } })}
+            >
+              <span>{job.title}</span>
+            </button>
+          );
+        })}
+        <div className={styles.mockLegend}>
+          <strong>Demo Map</strong>
+          <span>{validJobs.length} jobs nearby</span>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
+
+  return <div id="map" className={styles.map}></div>;
 };
 
 export default Map;

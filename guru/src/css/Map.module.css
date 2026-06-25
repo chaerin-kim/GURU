@@ -118,6 +118,126 @@
   border-bottom: 0;
 }
 
+.map {
+  width: 100%;
+  height: 100%;
+  min-height: 25rem;
+}
+
+.mockMap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 25rem;
+  overflow: hidden;
+  border-radius: 0.4rem;
+  background:
+    linear-gradient(135deg, rgba(32, 196, 158, 0.18), rgba(255, 255, 255, 0.12)),
+    linear-gradient(90deg, #e8f6f2 0 24%, #f7fbf7 24% 48%, #e4f0ec 48% 72%, #f9f7ed 72% 100%);
+}
+
+.mockGrid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+  background-image:
+    linear-gradient(rgba(83, 117, 111, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(83, 117, 111, 0.18) 1px, transparent 1px);
+  background-size: 8rem 8rem;
+}
+
+.mockRoadPrimary,
+.mockRoadSecondary {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  height: 5.8rem;
+  border: 0.2rem solid rgba(255, 255, 255, 0.85);
+  background: rgba(245, 202, 115, 0.8);
+  box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+.mockRoadPrimary {
+  top: 50%;
+  transform: rotate(-12deg);
+}
+
+.mockRoadSecondary {
+  top: 28%;
+  height: 3.8rem;
+  transform: rotate(28deg);
+  background: rgba(219, 232, 227, 0.92);
+}
+
+.mockMarker {
+  position: absolute;
+  z-index: 2;
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 0.3rem solid #111;
+  border-radius: 50%;
+  background: var(--cr-m-g);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+.mockMarker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.7rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-right: 0.3rem solid #111;
+  border-bottom: 0.3rem solid #111;
+  background: var(--cr-m-g);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.mockMarker span {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 1.2rem);
+  max-width: 20rem;
+  padding: 0.7rem 1rem;
+  border: 0.2rem solid #111;
+  border-radius: 0.4rem;
+  color: #111;
+  background: #fff;
+  font-size: 1.3rem;
+  font-weight: 800;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.12);
+}
+
+.mockLegend {
+  position: absolute;
+  left: 2rem;
+  bottom: 2rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1.2rem 1.4rem;
+  border: 0.2rem solid rgba(17, 17, 17, 0.85);
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+}
+
+.mockLegend strong {
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.mockLegend span {
+  color: #666;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
 .mapFallback {
   width: 100%;
   height: 100%;
