@@ -1,0 +1,591 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+:root {
+  --cr-m-y: #ffc548;
+  --cr-m-g: #15ca9f;
+  --cr-bl1: #121212;
+  --cr-g1: #8f8f8f;
+  --cr-g2: #6f6f6f;
+  --cr-g3: #e1e3e9;
+  --cr-w: #fff;
+  --cr-blue: #2c7cf2;
+  --cr-red: #fa4d4d;
+  --cr-line: #ddd;
+  --lg-gap: 6.8rem;
+  --md-gap: 2.8rem;
+  --sm-gap: 1.8rem;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic",
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+.btn {
+  display: inline-block;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: -0.025rem;
+  height: 4.3rem;
+  line-height: 4rem;
+  border-radius: 0.4rem;
+  border-color: transparent;
+  transition: 0.4s;
+}
+.primary {
+  border: 3px solid var(--cr-bl1);
+  color: var(--cr-bl1);
+}
+.tertiary {
+  border: 3px solid var(--cr-line);
+  color: #787878;
+  background: var(--cr-g3);
+}
+.yellow {
+  background: var(--cr-m-y);
+}
+.green {
+  background: var(--cr-m-g);
+}
+.btn:hover,
+.btn.yellow:hover,
+.btn.green:hover {
+  background: var(--cr-bl1);
+  color: var(--cr-w);
+  border-color: var(--cr-bl1);
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+}
+
+h2 {
+  font-weight: 800;
+  font-size: 3.8rem;
+  line-height: 127%;
+  color: var(--cr-bl1);
+}
+h3 {
+  font-weight: 700;
+  font-size: 2.8rem;
+  line-height: 127%;
+  color: var(--cr-bl1);
+}
+h4 {
+  font-weight: 700;
+  font-size: 2.8rem;
+  line-height: 127%;
+  color: var(--cr-bl1);
+}
+
+.mw {
+  max-width: 144rem;
+  width: calc(100% - 2.4rem);
+  margin: 0 auto;
+}
+
+progress {
+  -webkit-appearance: none;
+  height: 0.8rem;
+}
+progress::-webkit-progress-bar {
+  background-color: #f1f1f1;
+  border-radius: 100rem;
+}
+
+progress::-webkit-progress-value {
+  transition: 0.3s;
+  background-color: var(--cr-m-y);
+  border-radius: 100rem;
+}
+
+.subPage {
+  width: 100%;
+  padding: 6.8rem 0 8rem 0;
+  min-height: calc(100vh - 9.7rem - 13.1rem);
+}
+.subPage > section {
+  display: flex;
+  align-items: flex-start;
+  gap: 4.6rem;
+}
+.subPage .contents {
+  flex-wrap: wrap;
+  display: flex;
+  gap: 1.6rem;
+  flex: 1;
+}
+.subPage.jobOffer .contents {
+  overflow-y: hidden;
+}
+.subPage .contents > h3 {
+  width: 100%;
+  padding: 0.6rem 0 0 0;
+}
+.subPage .contents > .conTitle {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: flex-end;
+}
+.LobHandler {
+  color: #748787;
+}
+.LobHandler::before {
+  content: "\f362";
+  font: var(--fa-font-solid);
+  font-size: 1.4rem;
+  padding-right: 0.7rem;
+}
+.LobHandler::after {
+  content: "필터";
+}
+html:lang(en) .LobHandler::after {
+  content: "Filter";
+}
+
+.appliedList .contents > .boxContainer,
+.jobOffer .contents > .boxContainer {
+  background: #f1f1f1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.appliedList .contents > .boxContainer li,
+.jobOffer .contents > .boxContainer li {
+  width: 100%;
+}
+main .lnbCompo {
+  width: 24.5rem;
+}
+.lnbCompo h2 > span {
+  display: block;
+  font-size: 2.8rem;
+  opacity: 0.4;
+  line-height: 128%;
+  padding: 0 0 35px;
+}
+
+.subPage .contents > .boxContainer {
+  border: 3px solid var(--cr-bl1);
+  padding: 3.4rem 3.6rem;
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  width: 100%;
+}
+.subPage .contents .full {
+  flex: 1;
+}
+.subPage .h3Coment {
+  display: inline-block;
+  margin-left: 1rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--cr-g1);
+}
+.subPage .h3Coment.noti {
+  color: var(--cr-red);
+}
+
+.btnWrap {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btnWrap > p {
+  width: 100%;
+  order: -1;
+  text-align: center;
+  padding: 0.5rem 0 1.2rem 0;
+  color: #5f5f5f;
+}
+.btnWrap .btn {
+  width: 15.8rem;
+  height: 4.8rem;
+  line-height: 4.6rem;
+}
+
+.fullLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  min-height: calc(100vh - 9.7rem - 13.2rem);
+}
+
+.fullLayout h2 {
+  text-align: center;
+  padding: 4rem 0 1.5rem 0;
+}
+.fullLayout h2 > span {
+  display: block;
+  font-size: 2.2rem;
+  color: var(--cr-g1);
+  font-weight: 500;
+}
+.fullLayout .boxCon {
+  border: 3px solid var(--cr-bl1);
+  min-width: 47.5rem;
+  padding: 3rem;
+  border-radius: 1rem;
+}
+.signup.fullLayout {
+  padding: 0 0 15px;
+}
+.signup.fullLayout .boxCon,
+.signup.fullLayout .signupForm {
+  width: 100%;
+  max-width: 56rem;
+}
+
+.textList {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.7rem;
+  gap: 1.8rem;
+  color: var(--cr-bl1);
+}
+.textList p > span {
+  color: var(--cr-g1);
+  min-width: 9.3rem;
+  display: inline-block;
+}
+.textList p > strong {
+  font-weight: 800;
+}
+
+/*date Picker*/
+.react-datepicker {
+  font-size: 1.6rem;
+  border: 3px solid var(--cr-bl1);
+  border-radius: 0.4rem;
+}
+.react-datepicker__triangle {
+  display: none;
+}
+.react-datepicker__header {
+  font-size: 1.6rem;
+  background: var(--cr-m-y);
+}
+.react-datepicker__current-month {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+.react-datepicker__day-names,
+.react-datepicker__week {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 0.5rem;
+}
+.react-datepicker__day-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  opacity: 0.9;
+  margin: 0.5rem;
+}
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.7rem;
+  height: 3.7rem;
+  line-height: 0;
+  margin: 0;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.react-datepicker__day--today {
+  background: #bad9f1;
+}
+.react-datepicker__day:hover,
+.react-datepicker__month-text:hover,
+.react-datepicker__quarter-text:hover,
+.react-datepicker__year-text:hover {
+  background: var(--cr-m-y);
+  color: var(--cr-w);
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range {
+  background: var(--cr-m-y);
+  color: var(--cr-bl1);
+  font-weight: 600;
+}
+.react-datepicker__navigation {
+  top: 0.6rem;
+}
+.react-datepicker__year-read-view--down-arrow,
+.react-datepicker__month-read-view--down-arrow,
+.react-datepicker__month-year-read-view--down-arrow,
+.react-datepicker__navigation-icon::before {
+  border-color: var(--cr-bl1);
+  opacity: 0.5;
+}
+.react-datepicker__navigation:hover *::before {
+  border-color: var(--cr-bl1);
+  opacity: 1;
+}
+
+@media (max-width: 1576px) {
+  .App {
+    overflow: hidden;
+  }
+  .mw {
+    max-width: 100%;
+    width: calc(100% - var(--lg-gap) * 2);
+  }
+  main .lnbCompo {
+    width: 22rem;
+  }
+}
+
+@media (max-width: 1240px) {
+  .mw {
+    width: calc(100% - var(--md-gap) * 2);
+    flex-wrap: wrap;
+  }
+  .subPage > section {
+    gap: 2.8rem;
+  }
+}
+@media (max-width: 990px) {
+  .App {
+    padding-top: 6.2rem;
+  }
+  .mw {
+    width: calc(100% - var(--sm-gap) * 2);
+  }
+  .btnWrap {
+    width: calc(100% - var(--sm-gap) * 2);
+  }
+  .btnWrap .btn {
+    width: auto;
+    flex: 1;
+  }
+
+  .fullLayout .boxCon {
+    width: calc(100% - var(--sm-gap) * 2);
+    min-width: auto;
+  }
+  .subPage {
+    flex-wrap: wrap;
+    padding: 4rem 0;
+    min-height: calc(100vh - 6.2rem - 18.7rem);
+  }
+  .subPage > section {
+    gap: 2rem;
+  }
+  .findjob .midSection .contents ul,
+  .subPage .contents > .boxContainer {
+    padding: 2.4rem;
+  }
+  .subPage .contents > h3 {
+    /* padding-top: 3.4rem; */
+  }
+  .subPage .contents > .conTitle {
+    align-items: center;
+  }
+  .LobHandler {
+    padding-top: 0.5rem;
+  }
+  .LobHandler::before {
+    content: "\f0dc";
+    font: var(--fa-font-solid);
+    font-size: 1.6rem;
+    padding-right: 0.7rem;
+  }
+  .LobHandler::after {
+    content: "필터";
+    font-size: 1.8rem;
+  }
+  html:lang(en) .LobHandler::after {
+    content: "Filter";
+  }
+
+  .btnWrap {
+    width: 100%;
+    display: flex;
+  }
+  .btnWrap .btn {
+    width: auto;
+    flex: 1;
+  }
+  .btnWrap .btn,
+  .btn {
+    font-size: 1.8rem;
+    height: auto;
+    line-height: 100%;
+    padding: 1.8rem 0;
+    border-radius: 0.4rem;
+  }
+}
+
+@media (min-width: 1121px) {
+  main .lnbCompo {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+    transition: opacity 1.2s, transform 0.4s, visibility 1.2s, width 0.3s;
+    position: sticky;
+    top: 1.6rem;
+  }
+  main.findjob .midSection {
+    gap: 4.6rem;
+  }
+  main.has.findjob .midSection,
+  main.has.subPage > section {
+    gap: 0;
+  }
+  main.has .lnbCompo {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(-24.5rem);
+    width: 0;
+    transition: opacity 0s, transform 0.4s, visibility 0.8s, width 0.3s;
+  }
+  main .lnbCompo .filterBtn {
+    display: none;
+  }
+}
+
+@media (max-width: 1120px) {
+  main .lnbCompo {
+    width: 100%;
+  }
+  main .lnbCompo h2 {
+    text-align: center;
+  }
+  main .lnbCompo .filterWrap {
+    display: none;
+  }
+  main .lnbCompo .filterBtn {
+    width: 20rem;
+    height: 4.6rem;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    font-size: 1.6rem;
+  }
+  main.has .lnbCompo .filterWrap {
+    display: block;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+main.has .lnbCompo .filterWrap > div {
+  position: relative;
+  background: #fff;
+  width: 95vw;
+  margin: 5rem auto 0;
+  border: 3px solid var(--cr-bl1);
+  padding: 2rem;
+  border-radius: 1rem;
+}
+@media (max-width: 660px) {
+  h2 {
+    font-size: 2.8rem;
+  }
+  .topSection h2 > span,
+  h2 > span,
+  .lnbCompo h2 > span {
+    font-size: 1.6rem;
+    padding-bottom: 1rem;
+  }
+  h3 {
+    font-size: 2rem;
+    letter-spacing: -0.05em;
+    font-weight: 800;
+  }
+  .subPage .contents {
+    gap: 1rem;
+  }
+  .subPage .contents > .conTitle {
+    align-items: center;
+  }
+  .LobHandler::after {
+    font-size: 1.4rem;
+  }
+  .LobHandler::before {
+    font-size: 1.2rem;
+  }
+  .subPage {
+    padding-top: 3.8rem;
+    padding-bottom: 4rem;
+  }
+  .findjob .midSection .contents ul,
+  .subPage .contents > .boxContainer {
+    padding: 1rem;
+    border-radius: 0.4rem;
+    border-width: 2px;
+    gap: 0;
+  }
+  .btn,
+  main.has .lnbCompo .filterWrap > div {
+    border-width: 2px;
+  }
+  main .lnbCompo .filterBtn {
+    width: 100%;
+    height: 4.8rem;
+  }
+  .btnWrap .btn,
+  .btn {
+    font-size: 1.6rem;
+    padding: 1.6rem 0;
+  }
+}
+@media (max-width: 380px) {
+  h2 {
+    font-size: 2.4rem;
+  }
+  .topSection h2 > span,
+  h2 > span {
+    font-size: 1.4rem;
+    padding-bottom: 0rem;
+  }
+  h3 {
+    font-size: 1.6rem;
+  }
+  .subPage .contents {
+    gap: 0.8rem;
+  }
+  .LobHandler::after {
+    font-size: 1.3rem;
+  }
+  .LobHandler::before {
+    font-size: 1rem;
+    padding-right: 0.5rem;
+  }
+  .findjob .midSection .contents ul,
+  .subPage .contents > .boxContainer {
+    padding: 0.7rem;
+  }
+  .btnWrap .btn,
+  .btn {
+    font-size: 1.5rem;
+    padding: 1.3rem 0;
+  }
+}

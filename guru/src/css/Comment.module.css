@@ -1,0 +1,139 @@
+.commentWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.commentWrap > h2 {
+  border: 0 !important;
+}
+.commentCon {
+  display: flex;
+  gap: 1.6rem;
+  padding: 0.5rem 0;
+}
+
+.commentCon:last-of-type {
+  padding-bottom: 1.4rem;
+}
+.commentCon .thumb {
+  width: 4.6rem;
+  height: 4.6rem;
+  overflow: hidden;
+  border-radius: 50%;
+  position: relative;
+  margin-top: 0.5rem;
+}
+.commentCon .thumb img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+}
+.commentCon .commentInfo {
+  padding: 1.6rem;
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  background: #f1f1f1;
+  border-radius: 0.8rem;
+}
+.commentCon .commentInfo strong {
+  font-size: 1.5rem;
+  font-weight: 800;
+  width: calc(100% - 10rem);
+  display: flex;
+  align-items: center;
+  order: 0;
+}
+.commentCon .commentInfo strong.autor::after {
+  content: "작성자";
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--cr-red);
+  border: 1px solid var(--cr-red);
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 10rem;
+  margin-left: 0.4rem;
+}
+.commentCon .commentInfo pre {
+  color: var(--cr-g1);
+  line-height: 168%;
+  width: 100%;
+  padding: 0.4rem 0 0 0;
+  order: 2;
+}
+.commentCon .commentInfo .btnWrap {
+  display: flex;
+  width: 10rem;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  order: 1;
+}
+.commentCon .commentInfo .btnWrap > button {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--cr-g2);
+}
+.commentCon .commentInfo .btnWrap > button:hover {
+  color: var(--cr-bl1);
+}
+.commentCon .commentInfo > textarea {
+  margin-top: 1rem;
+  order: 2;
+}
+
+.commentWrap form {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+.commentWrap form > button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: var(--cr-g2);
+  font-weight: 500;
+  padding: 1rem;
+  transform: translate(-0.6rem, -0.6rem);
+  transition: 0.3s;
+}
+.commentWrap form > button:hover {
+  color: var(--cr-bl1);
+}
+.commentWrap textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  min-height: 6rem;
+  padding: 1.6rem;
+  line-height: 168%;
+  border-radius: 0.4rem;
+  resize: none;
+}
+.commentWrap textarea::-webkit-scrollbar {
+  width: 0.3rem;
+}
+.commentWrap textarea::-webkit-scrollbar-thumb {
+  background: var(--cr-m-y);
+  border-radius: 10rem;
+}
+.commentWrap textarea::-webkit-scrollbar-track {
+  background: #ededed;
+}
+
+.commentWrap textarea::placeholder {
+  font-weight: 400;
+  color: var(--cr-g1);
+}
+
+@media (max-width: 660px) {
+  .commentCon .thumb {
+    display: none;
+  }
+  .commentCon .commentInfo {
+    border-radius: 0.4rem;
+  }
+}

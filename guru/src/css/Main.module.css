@@ -1,0 +1,656 @@
+.main h2 {
+  text-align: center;
+  padding: 0 0 6rem 0;
+}
+.main h2 img {
+  margin: 0 auto 1.8rem;
+}
+.main .MainOnline h2 img {
+  opacity: 0.8;
+}
+.category {
+  /* max-width: 144rem; */
+  width: calc(100% - 14rem);
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 5.3rem 0 5.3rem 0;
+  gap: 3.2rem;
+}
+.category > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 1rem;
+  padding: 2.1rem;
+  border: 3px solid var(--cr-bl1);
+  border-radius: 1.6rem;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.MainOnline,
+.MainOffline {
+  padding: 10rem 0;
+}
+.MainOnline {
+  background: #f6cc72;
+}
+.MainOffline {
+  background: #f2fcfa;
+}
+
+.MainOnline > div > button,
+.MainOffline > div > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: 30rem;
+  height: 5.9rem;
+  line-height: 0;
+  font-size: 2.2rem;
+}
+.MainOnline > div > button {
+  background: var(--cr-w);
+}
+.onWrap,
+.offWrap {
+  padding-bottom: 6rem;
+}
+.jobList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.onWrap .jobList {
+  gap: 2.4rem;
+}
+.onWrap .jobList li {
+  width: calc(50% - 1.2rem);
+}
+
+.offWrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+}
+.offWrap .mainMap {
+  width: calc(50% - 2.5rem / 2);
+  height: 59.3rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.offWrap .mainMap > div,
+.offWrap .mainMap > div > div {
+  width: 100%;
+  height: 100%;
+}
+.offWrap .jobList {
+  width: calc(50% - 2.5rem / 2);
+  gap: 1.6rem;
+}
+.offWrap .jobList li {
+  width: 100%;
+}
+
+.onWrap .jobList .emptyJob,
+.offWrap .jobList .emptyJob {
+  width: 100%;
+  min-height: 17rem;
+  padding: 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.72);
+  border: 2px solid var(--cr-bl1);
+  border-radius: 1rem;
+}
+
+.onWrap .jobList .emptyJob {
+  box-shadow: 3px 3px 3px 0px #dcb25adb;
+}
+
+.offWrap .jobList .emptyJob {
+  box-shadow: 3px 3px 3px 0px #b4b1b133;
+}
+
+.emptyJob strong {
+  font-size: 2.2rem;
+  font-weight: 900;
+}
+
+.emptyJob span {
+  color: #666;
+  font-size: 1.6rem;
+  line-height: 1.45;
+}
+
+.itemWrap {
+  padding: 3rem 6rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--cr-w);
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  cursor: pointer;
+  position: relative;
+  transition: 0.3s;
+}
+.onWrap .itemWrap {
+  box-shadow: 3px 3px 3px 0px #dcb25adb;
+}
+.offWrap .itemWrap {
+  box-shadow: 3px 3px 3px 0px #b4b1b133;
+}
+
+.itemWrap > div:first-of-type {
+  display: flex;
+}
+.itemWrap .itemTop {
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(100% - 8rem);
+}
+.itemWrap .itemTop h3 {
+  width: 100%;
+  padding: 0 0 1rem 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.itemWrap .itemTop > span {
+  color: #787878;
+  font-size: 1.4rem;
+  height: 3rem;
+  line-height: 3rem;
+  padding: 0 1.6rem;
+  background: var(--cr-g3);
+  border-radius: 100rem;
+  margin-right: 0.5rem;
+}
+.itemWrap > div:first-of-type > strong {
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: -0.1rem;
+  color: var(--cr-blue);
+  width: 8rem;
+  text-align: right;
+  line-height: 127%;
+}
+
+.itemWrap > div:last-of-type {
+  display: flex;
+  align-items: flex-end;
+  font-weight: 800;
+  color: #8f8f8f;
+  padding-top: 2.4rem;
+}
+.itemWrap > div:last-of-type strong {
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: -0.1rem;
+  color: var(--cr-bl1);
+  padding: 0 0.3rem 0 0.5rem;
+}
+
+.itemWrap .thumb {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translate(-6rem, -3rem);
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+.itemWrap .thumb > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: var(--cr-w);
+}
+
+.talent {
+  background: #e0eef0;
+  padding: 10rem 0 7.8rem 0;
+}
+.talent span {
+  font-size: 2rem;
+  display: block;
+  font-weight: 400;
+  line-height: 1;
+  padding-top: 0.8rem;
+  opacity: 0.6;
+}
+.talent > div {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+}
+.talent > div > div {
+  background: var(--cr-w);
+  border-radius: 1.6rem;
+  padding: 3rem 2.8rem;
+  border: 3px solid var(--cr-bl1);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.talent > div > div strong {
+  font-size: 2.4rem;
+  letter-spacing: -3%;
+  font-weight: 800;
+}
+.talent > div > div > p {
+  color: #5f5f5f;
+  line-height: 130%;
+  letter-spacing: -0.025em;
+  padding: 1.6rem 0 4.2rem 0;
+}
+.talent > div > div:nth-of-type(odd) img {
+  border-radius: 20rem 20rem 0 0;
+  background: #f4e6c7;
+}
+.talent > div > div:nth-of-type(even) img {
+  border-radius: 50%;
+  background: #f4e6c7;
+}
+.talent > div > div:hover {
+  background: var(--cr-m-y);
+}
+.talent > div > div:hover img {
+  background: var(--cr-w);
+}
+.talent .smView {
+  display: none;
+}
+.guruBanner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  background: var(--cr-m-y);
+}
+.guruBanner > div {
+  padding: 12rem 0 12rem 0;
+  display: flex;
+  gap: 10rem;
+  align-items: center;
+}
+.guruBanner .BannerImg {
+  width: 46%;
+  padding-top: 4rem;
+  display: flex;
+  justify-content: center;
+  border-radius: 1.6rem;
+  border: 4px solid var(--cr-bl1);
+  background-color: var(--cr-w);
+}
+.guruBanner .BannerImg img {
+  object-fit: contain;
+}
+
+.BannerText {
+  width: 43%;
+}
+
+.BannerText h3 > img {
+  line-height: 6.39rem;
+  padding: 0;
+  border: 0;
+  background-color: var(--cr-m-y);
+  display: unset;
+  width: 12rem;
+}
+.BannerText h3 {
+  font-size: 3.3rem;
+  padding-bottom: 3.2rem;
+  font-weight: 900;
+}
+.BannerText p {
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 148%;
+  opacity: 0.6;
+  letter-spacing: -0.025em;
+  padding-bottom: 2rem;
+}
+.BannerText > a {
+  width: 16rem;
+  background: var(--cr-w);
+  height: 4.8rem;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 2px;
+}
+@media (min-width: 1241px) {
+  .category > div:hover {
+    background: var(--cr-m-y);
+  }
+
+  .MainOnline .itemWrap:hover {
+    background: #f1f1f1;
+  }
+  .MainOffline .itemWrap:hover {
+    background: var(--cr-m-g);
+  }
+}
+@media (max-width: 1240px) {
+  .category {
+    padding: 4% 0;
+    gap: 2rem;
+  }
+  .talent,
+  .MainOnline,
+  .MainOffline {
+    padding: 10% 0;
+  }
+  .itemWrap {
+    padding: 3rem;
+  }
+  .itemWrap .thumb {
+    transform: translate(-3rem, -3rem);
+  }
+  .talent > div > div {
+    width: calc(25% - 6rem / 3);
+  }
+  .talent > div > div img {
+    width: 100%;
+  }
+  .guruBanner > div {
+    padding: 10% 0;
+    justify-content: center;
+    gap: 4rem;
+  }
+  .guruBanner .BannerImg,
+  .guruBanner .BannerText {
+    width: 80%;
+  }
+}
+@media (max-width: 990px) {
+  .onWrap .jobList {
+    gap: 1.6rem;
+  }
+  .onWrap .jobList li {
+    width: calc(50% - 0.8rem);
+  }
+  .offWrap {
+    gap: 1rem;
+  }
+
+  .offWrap {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+  }
+  .offWrap .mainMap {
+    height: 30rem;
+  }
+  .offWrap .mainMap,
+  .offWrap .jobList {
+    width: 100%;
+    gap: 1rem;
+  }
+  .talent > div {
+    gap: 0;
+    justify-content: space-between;
+  }
+  .talent > div > div {
+    padding: 2.8rem 2.2rem;
+    width: calc(25% - 0.8rem);
+  }
+  .talent > div > div > p {
+    padding-bottom: 2.8rem;
+    font-size: 1.5rem;
+  }
+  .guruBanner .BannerImg,
+  .guruBanner .BannerText {
+    width: 90%;
+  }
+}
+@media (max-width: 720px) {
+  .guruBanner > div,
+  .talent,
+  .MainOnline,
+  .MainOffline {
+    padding: 17% 0;
+  }
+  .category {
+    gap: 0.8rem;
+  }
+  .category > div {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    font-size: 1.6rem;
+  }
+  .main h2 {
+    padding-bottom: 6%;
+  }
+  .onWrap,
+  .offWrap {
+    padding-bottom: 1.2rem;
+  }
+  .main h2 img {
+    margin: 0 auto 1rem;
+    zoom: 0.7;
+  }
+  .onWrap .jobList {
+    gap: 1rem;
+  }
+  .onWrap .jobList li {
+    width: calc(50% - 0.5rem);
+  }
+  .itemWrap,
+  .offWrap .mainMap {
+    border: 1px solid var(--cr-line);
+    border-radius: 0.4rem;
+  }
+  .offWrap .mainMap {
+    height: 25rem;
+  }
+  .itemWrap {
+    padding: 2.2rem;
+  }
+  .itemWrap .thumb {
+    transform: translate(-2.2rem, -2.2rem);
+  }
+  .itemWrap h3 {
+    font-size: 2.2rem;
+  }
+  .itemWrap > div:first-of-type > strong {
+    font-size: 2.2rem;
+  }
+
+  .itemWrap .itemTop > span {
+    color: var(--cr-g2);
+    font-size: 1.4rem;
+    height: auto;
+    line-height: 1;
+    padding: 0;
+    background: transparent;
+    font-weight: 500;
+    border-radius: 0;
+    margin-right: 0;
+  }
+  .itemWrap .itemTop > span::after {
+    content: ",";
+    margin-right: 0.4rem;
+  }
+  .itemWrap .itemTop > span:last-of-type::after,
+  .offWrap .itemWrap .itemTop > span:first-of-type {
+    display: none;
+  }
+
+  .MainOnline > div > button,
+  .MainOffline > div > button {
+    width: 100%;
+    height: 5.3rem;
+    font-size: 1.8rem;
+    border-width: 2px;
+    border: 0;
+  }
+  .talent h2 > span {
+    font-size: 1.6rem;
+    line-height: 142%;
+    padding-top: 0.4rem;
+  }
+  .talent .smView {
+    display: block;
+  }
+  .talent > div {
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  .talent > div > div {
+    padding: 2.2rem 2rem;
+    width: calc(50% - 0.5rem);
+
+    border-radius: 0.4rem;
+    border: 1px solid var(--cr-line);
+  }
+  .talent > div > div > img {
+    width: auto;
+    margin: 0 auto;
+  }
+  .talent > div > div > p {
+    font-size: 1.4rem;
+    padding: 1.2rem 0 2rem 0;
+  }
+}
+
+@media (max-width: 660px) {
+  .category {
+    padding: 6% 0;
+    gap: 0.5rem;
+  }
+  .category > div {
+    font-weight: 500;
+    font-size: 1.4rem;
+  }
+  .onWrap .jobList {
+    gap: 0.8rem;
+  }
+  .onWrap .jobList li {
+    width: 100%;
+  }
+  .offWrap {
+    flex-wrap: wrap;
+  }
+  .offWrap .mainMap,
+  .offWrap .jobList {
+    width: 100%;
+  }
+  .offWrap .mainMap {
+    height: 30rem;
+  }
+  .itemWrap {
+    padding: 2.2rem 2rem;
+  }
+  .itemWrap .thumb {
+    transform: translate(-2.2rem, -2rem);
+  }
+  .itemWrap .thumb {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-width: 1px;
+  }
+  .itemWrap > div:last-of-type {
+    font-size: 1.3rem;
+  }
+  .itemWrap > div:last-of-type strong {
+    font-size: 1.8rem;
+    font-weight: 900;
+  }
+  .itemWrap .itemTop > span {
+    font-size: 1.3rem;
+  }
+  .guruBanner > div {
+    gap: 2.6rem;
+    padding-bottom: 9%;
+  }
+  .guruBanner .BannerImg,
+  .guruBanner .BannerText {
+    width: 100%;
+  }
+  .guruBanner .BannerImg {
+    border-width: 2px;
+  }
+  .BannerText h3 {
+    font-size: 2rem;
+    line-height: 142%;
+    padding-bottom: 1rem;
+  }
+  .BannerText h3 img {
+    width: 9rem;
+    padding-right: 0.4rem;
+  }
+  .BannerText > p {
+    font-size: 1.6rem;
+  }
+  .BannerText > a {
+    width: 100%;
+    height: 5.2rem;
+  }
+}
+@media (max-width: 380px) {
+  .offWrap .mainMap {
+    height: 20rem;
+  }
+  .itemWrap .itemTop {
+    width: calc(100% - 6rem);
+  }
+  .itemWrap h3,
+  .itemWrap > div:first-of-type > strong {
+    font-size: 2rem;
+    width: 6rem;
+  }
+  .itemWrap .itemTop h3 {
+    padding-bottom: 0.5rem;
+  }
+  .itemWrap > div:last-of-type {
+    padding-top: 1.8rem;
+  }
+  .MainOnline > div > button,
+  .MainOffline > div > button {
+    width: 100%;
+    height: 4.3rem;
+    font-size: 1.5rem;
+    border-width: 2px;
+    border: 0;
+  }
+  .talent > div {
+    gap: 0.8rem;
+    justify-content: space-between;
+  }
+  .talent > div > div {
+    padding: 2rem 1.6rem;
+    width: calc(50% - 0.4rem);
+  }
+  .talent > div > div > img {
+    width: 100%;
+  }
+  .talent > div > div > strong {
+    font-size: 1.8rem;
+  }
+  .talent > div > div > p {
+    font-size: 1.3rem;
+    padding: 1rem 0 1.6rem 0;
+  }
+}

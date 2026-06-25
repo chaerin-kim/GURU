@@ -1,0 +1,252 @@
+.findjob {
+  min-height: calc(100vh - 9.7rem - 21rem);
+}
+/*topCon*/
+.topSection {
+  width: 100%;
+  padding: 4.2rem 0;
+  border-top: 3px solid var(--cr-bl1);
+  border-bottom: 3px solid var(--cr-bl1);
+  transition: 0.3s;
+  position: relative;
+}
+.onLine .topSection {
+  background: var(--cr-m-y);
+}
+.offLine .topSection {
+  background: var(--cr-m-g);
+}
+.topSection > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topSection h2 {
+  text-align: left;
+  padding-bottom: 0;
+}
+.topSection h2 > span {
+  display: block;
+  font-size: 2.8rem;
+  opacity: 0.4;
+  line-height: 128%;
+}
+.topSection .tab {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid var(--cr-bl1);
+  background: var(--cr-w);
+  padding: 0.8rem 1.3rem;
+  border-radius: 100rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.topSection .tab button {
+  font-size: 1.8rem;
+  font-weight: 800;
+  height: 4.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  padding: 0 3.8rem;
+  border-radius: 100rem;
+  transition: background 0.8s;
+}
+.topSection .tab button.on {
+  border: 3px solid var(--cr-bl1);
+  color: var(--cr-bl1);
+}
+.onLine .topSection .tab button.on {
+  background: var(--cr-m-y);
+}
+.offLine .topSection .tab button.on {
+  background: var(--cr-m-g);
+}
+.topSection label {
+  display: flex;
+  height: 5.9rem;
+  padding: 0 2.9rem;
+  border: 3px solid var(--cr-bl1);
+  background: var(--cr-w);
+  max-width: 30rem;
+  width: 100%;
+  border-radius: 100rem;
+}
+.topSection label input {
+  border: 0;
+  font-weight: 600;
+}
+.topSection label input::placeholder {
+  color: var(--cr-g1);
+  font-weight: 400;
+}
+.topSection label button::after {
+  content: "\f002";
+  font: var(--fa-font-solid);
+  font-size: 1.8rem;
+  text-shadow: 1px 0 0 var(--cr-bl1);
+}
+
+.findjob .midSection {
+  margin: 4.3rem auto 8rem;
+  display: flex;
+  gap: 0 4.6rem;
+  align-items: flex-start;
+}
+.mapApiArea {
+  width: 100%;
+  height: 40rem;
+}
+.mapApiArea > div,
+.mapApiArea > div > div {
+  width: 100%;
+  height: 100%;
+}
+/*filter*/
+.filter {
+  width: 24rem;
+}
+.filter > div > strong {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 3rem;
+  position: relative;
+}
+
+/*Right Con*/
+.midSection .contents {
+  flex: 1;
+}
+.midSection .contents .conTitle {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+}
+.midSection .contents ul {
+  border: 3px solid var(--cr-bl1);
+  border-radius: 1rem;
+  padding: 4rem;
+}
+.boxContainer .noneList,
+.midSection .contents ul .noneList {
+  background: var(--cr-w);
+  padding: 3rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  box-shadow: 2px 3px 3px 0 rgba(0, 0, 0, 0.08);
+}
+.onLine .contents ul {
+  background: #faf3e5;
+}
+.offLine .contents ul {
+  background: #e5f1ee;
+}
+.JobList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mapApiArea > div {
+  width: 100%;
+  background: #fff;
+}
+@media (max-width: 1440px) {
+  .midSection .contents ul {
+    padding: 3rem;
+  }
+  .findjob .midSection {
+    gap: 0 2.4rem;
+  }
+}
+@media (max-width: 1120px) {
+  .topSection > div {
+    flex-direction: column;
+  }
+  .topSection > div > form {
+    display: none;
+  }
+  .topSection > div h2 {
+    width: 100%;
+    text-align: center;
+  }
+  .topSection .tab {
+    position: relative;
+    left: auto;
+    top: auto;
+    margin: 3.5rem 0 0 0;
+    transform: translate(0, 0);
+    margin-bottom: 1rem;
+  }
+}
+@media (max-width: 990px) {
+  .topSection {
+    margin-bottom: 10rem;
+  }
+  .topSection .tab {
+    margin-bottom: 0;
+  }
+  .topSection label {
+    position: absolute;
+    bottom: -3rem;
+    left: 50%;
+    width: calc(100% - var(--sm-gap) * 2);
+    transform: translate(-50%, 100%);
+    max-width: 100%;
+    justify-content: space-between;
+    border-radius: 1rem;
+  }
+  .topSection label input {
+    flex: 1;
+  }
+  .topSection label button {
+    padding-left: 1.6rem;
+  }
+  .midSection .contents {
+    width: 100%;
+  }
+  .findjob .midSection {
+    flex-direction: column;
+    margin-top: 3.5rem;
+  }
+  .midSection .contents ul {
+    padding: 2.4rem;
+  }
+}
+@media (max-width: 660px) {
+  .topSection {
+    border-width: 2px;
+    padding: 4rem 0 3rem 0;
+  }
+  .topSection .tab {
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-width: 2px;
+  }
+  .topSection .tab button {
+    height: 3.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 0;
+    font-size: 1.4rem;
+  }
+  .topSection .tab button.on {
+    border-width: 2px;
+  }
+  .topSection label {
+    border-width: 2px;
+    border-radius: 0.4rem;
+    padding: 0 1.4rem;
+  }
+  .boxContainer .noneList,
+  .midSection .contents ul .noneList {
+    font-size: 1.6rem;
+    text-align: center;
+    margin-top: 0.8rem;
+  }
+}

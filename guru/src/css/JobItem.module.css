@@ -1,0 +1,458 @@
+.itemWrap {
+  border: 3px solid transparent;
+  transition: 0.3s;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+.jobItem {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 3.4rem 4rem;
+  background: var(--cr-w);
+  transition: 0.3s;
+  box-shadow: 2px 3px 3px 0 rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+.findJob {
+}
+.jobItem .jobInfo {
+  display: flex;
+  gap: 4.6rem;
+  width: calc(100% - 25rem);
+  align-items: center;
+}
+.jobItem .jobInfo .thumb {
+  width: 12.6rem;
+  height: 12.6rem;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid var(--cr-bl1);
+}
+.jobItem .jobInfo .thumb > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.jobItem .jobInfo .jobDes {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  width: 100%;
+  padding-right: 2.4rem;
+}
+.jobItem .jobInfo .jobDes .cateWrap {
+  padding-bottom: 1.1rem;
+}
+.jobItem .jobInfo .jobDes .cateWrap span {
+  color: #787878;
+  font-size: 1.4rem;
+  height: 3rem;
+  line-height: 3rem;
+  padding: 0 2rem;
+  background: var(--cr-g3);
+  border-radius: 100rem;
+  margin-right: 0.5rem;
+}
+.jobItem .jobInfo .jobDes > div {
+  display: flex;
+  align-items: flex-end;
+  font-weight: 800;
+  color: #8f8f8f;
+}
+.jobItem .jobInfo .jobDes > div strong {
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: -0.1rem;
+  color: var(--cr-bl1);
+  padding: 0 0.3rem 0 1rem;
+}
+
+.jobDes > h4 {
+  width: 100%;
+  padding: 0.5rem 0 1.7rem 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.jobDes > h4 .jobCate {
+  font-size: 1.6rem;
+  padding: 0.8rem 2rem;
+  border-radius: 50rem;
+  position: relative;
+  top: -0.5rem;
+  margin-right: 1rem;
+}
+.offLine .jobDes > h4 .jobCate {
+  background: var(--cr-m-g);
+}
+
+.onLine .jobDes > h4 .jobCate {
+  background: var(--cr-m-y);
+}
+
+.jobDes .btnWrap {
+  padding-top: 4.8rem;
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+}
+.jobDes .btnWrap > button,
+.jobDes .btnWrap > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 15.8rem;
+  border: 0;
+  border-radius: 0.4rem;
+  color: var(--cr-bl1);
+  height: 4.5rem;
+  line-height: 0;
+  padding-top: 0.3rem;
+  border: 2px solid transparent;
+}
+.jobDes .btnWrap > button:hover,
+.jobDes .btnWrap > a:hover {
+  color: var(--cr-w);
+}
+
+.AppInfo {
+  width: 25rem;
+  border-left: 1px solid var(--cr-line);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3.5rem;
+}
+.AppInfo > strong {
+  text-align: right;
+  width: 100%;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--cr-blue);
+}
+
+.AppInfo > strong.stat2 {
+  color: #f7af15;
+}
+.AppInfo > strong.stat3,
+.AppInfo > strong.stat4 {
+  color: #a24bec;
+}
+.AppInfo > strong.stat5 {
+  color: var(--cr-m-bl1);
+}
+.AppInfo > strong.stat-1 {
+  color: var(--cr-red);
+}
+.AppInfo > strong.stat-2 {
+  color: var(--cr-g1);
+}
+.AppInfo > div {
+  width: 100%;
+  padding-left: 3rem;
+  display: flex;
+  gap: 1.4rem;
+  flex-direction: column;
+}
+.AppInfo .row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.AppInfo .row span {
+  color: var(--cr-g1);
+  letter-spacing: -0.025em;
+}
+.AppInfo .row p {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--cr-bl1);
+}
+.AppInfo .row p > span {
+  color: var(--cr-bl1);
+}
+@media (min-width: 1121px) {
+  .itemWrap:hover {
+    border: 3px solid var(--cr-bl1);
+    border-radius: 0.5rem;
+  }
+  .jobItem.onLine:hover {
+    background: var(--cr-m-y);
+  }
+  .jobItem.offLine:hover {
+    background: var(--cr-m-g);
+  }
+
+  .jobItem:hover h4,
+  .jobItem:hover .AppInfo > strong,
+  .jobItem:hover .jobInfo .jobDes > div strong,
+  .jobItem:hover .AppInfo .row > p,
+  .jobItem:hover .AppInfo .row > p span {
+    color: var(--cr-bl1);
+  }
+
+  .jobItem:hover h4 > span {
+    color: var(--cr-bl1);
+  }
+  .jobItem:hover .AppInfo .row > span,
+  .jobItem:hover .jobInfo .jobDes > div {
+    color: rgba(255 255 255 / 0.7);
+  }
+  .jobItem:hover .jobDes > h4 .jobCate {
+    background: var(--cr-w);
+  }
+  .jobItem:hover .AppInfo {
+    border-color: rgba(255 255 255 / 0.4);
+  }
+  .jobItem.onLine:hover h4,
+  .jobItem.onLine:hover .AppInfo > strong,
+  .jobItem.onLine:hover .jobInfo .jobDes > div strong,
+  .jobItem.onLine:hover .AppInfo .row > p,
+  .jobItem.onLine:hover .AppInfo .row > p span {
+    color: var(--cr-bl1);
+  }
+  .jobItem.onLine:hover .AppInfo .row > span,
+  .jobItem.onLine:hover .jobInfo .jobDes > div {
+    color: rgba(0 0 0 / 0.6);
+  }
+  .jobItem:hover .jobDes .btnWrap > button {
+    background: rgba(255 255 255 / 0.7);
+  }
+  .jobItem:hover .jobDes .btnWrap > button:last-of-type {
+    background: var(--cr-w);
+  }
+  .jobItem:hover .jobDes .btnWrap > button:hover,
+  .jobItem:hover .jobDes .btnWrap > button:last-of-type:hover {
+    background: var(--cr-bl1);
+  }
+}
+@media (max-width: 1440px) {
+  .jobItem {
+    padding: 3rem;
+    position: relative;
+  }
+  .jobItem .jobInfo {
+    gap: 2rem;
+    width: calc(100% - 22rem);
+  }
+  .jobItem .jobInfo .jobDes {
+    padding-right: 2rem;
+  }
+  .AppInfo {
+    width: 22rem;
+  }
+  .AppInfo > div {
+    padding-left: 2rem;
+  }
+
+  .jobDes .btnWrap {
+    padding-top: 4.8rem;
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+  .jobDes .btnWrap > button,
+  .jobDes .btnWrap > a {
+    min-width: auto;
+    width: 100%;
+    max-width: calc(33.3% - 0.3rem);
+  }
+}
+
+@media (max-width: 1120px) {
+  .jobItem {
+    padding: 2.8rem;
+  }
+  .jobItem .jobInfo {
+    gap: 2.8rem;
+    width: calc(100% - 24rem);
+  }
+  .jobItem .jobInfo .thumb {
+    width: 9.6rem;
+    height: 9.6rem;
+  }
+  .jobItem .jobInfo .jobDes {
+    padding-right: 0;
+  }
+  .jobItem .jobInfo .jobDes h4 {
+    order: 1;
+    padding-bottom: 0.6rem;
+  }
+  .jobItem .jobInfo .jobDes .cateWrap {
+    padding-bottom: 0.5rem;
+    order: 2;
+    width: 100%;
+  }
+  .jobItem .jobInfo .jobDes .cateWrap span {
+    font-size: 1.3rem;
+    height: auto;
+    line-height: 100%;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    color: var(--cr-g1);
+    font-weight: 400;
+  }
+  .jobItem .jobInfo .jobDes .cateWrap span::after {
+    content: ",";
+    margin-right: 0.4rem;
+  }
+  .jobItem .jobInfo .jobDes .cateWrap span:last-of-type:after {
+    display: none;
+  }
+  .jobItem .jobInfo .jobDes > div {
+    order: 3;
+  }
+  .jobDes .btnWrap {
+    padding-top: 2.2rem;
+  }
+  .jobDes .btnWrap > button,
+  .jobDes .btnWrap > a {
+    height: 4.1rem;
+    font-size: 1.5rem;
+    line-height: 0;
+    max-width: 14rem;
+    padding: 0;
+  }
+}
+
+@media (max-width: 990px) {
+  .jobItem .jobInfo {
+    width: 100%;
+  }
+  .jobDes > h4 {
+    width: calc(100% - 10rem);
+  }
+  .AppInfo {
+    width: 10rem;
+    border-left: 0;
+    position: absolute;
+    top: 3.8rem;
+    right: 2.8rem;
+  }
+  .AppInfo > strong {
+    font-size: 2.8rem;
+  }
+  .AppInfo > div {
+    display: none;
+  }
+  .jobItem .jobInfo .jobDes > div {
+    width: 100%;
+  }
+  .jobItem .jobInfo .jobDes > div strong {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 660px) {
+  .jobItem {
+    padding: 1.4rem 1.2rem 1.8rem 1.2rem;
+  }
+  .jobItem .jobInfo {
+    gap: 1.2rem;
+    width: 100%;
+  }
+  .findJob .jobItem .jobInfo {
+    align-items: flex-start;
+  }
+  .jobItem .jobInfo .thumb {
+    width: 4.6rem;
+    height: 4.6rem;
+    border-width: 2px;
+    margin-top: 0.4rem;
+  }
+  .findjob .jobItem .jobInfo .thumb {
+    margin-top: 0.4rem;
+  }
+  .jobDes > h4 {
+    padding: 0.5rem 0;
+    font-size: 1.8rem;
+    width: calc(100% - 5.5rem);
+  }
+  .jobDes > h4 .jobCate {
+    font-size: 1.2rem;
+    padding: 0.4rem 1.3rem 0.3rem 1.3rem;
+    border-radius: 50rem;
+    position: relative;
+    top: -0.2rem;
+    margin-right: 0.4rem;
+  }
+  .AppInfo {
+    width: 5.5rem;
+    border-left: 0;
+    position: absolute;
+    top: 1.8rem;
+    right: 1.2rem;
+  }
+  .AppInfo > strong {
+    font-size: 1.6rem;
+  }
+  .AppInfo > div {
+    display: none;
+  }
+
+  .jobItem .jobInfo .jobDes > div:first-of-type {
+    font-size: 1.4rem;
+  }
+  .jobItem .jobInfo .jobDes > div:first-of-type strong {
+    font-size: 1.8rem;
+    padding-left: 0.4rem;
+  }
+  .jobDes .btnWrap {
+    padding-top: 1.6rem;
+  }
+  .jobDes .btnWrap > button,
+  .jobDes .btnWrap > a {
+    height: 3.2rem;
+    padding: 0;
+    line-height: 0;
+    max-width: calc(50% - 0.3rem);
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 380px) {
+  .jobDes > h4 {
+    font-size: 1.8rem;
+  }
+  .jobDes > h4 .jobCate {
+    font-size: 1.1rem;
+    padding: 0.3rem 1rem 0.2rem 1rem;
+    top: -0.2rem;
+  }
+  .jobItem .jobInfo {
+    gap: 1rem;
+  }
+  .jobItem .jobInfo .jobDes > div:first-of-type {
+    font-size: 1.3rem;
+    padding-top: 0.3rem;
+  }
+  .jobItem .jobInfo .jobDes > div:first-of-type strong {
+    font-size: 1.5rem;
+  }
+  .AppInfo > strong {
+    font-size: 1.5rem;
+  }
+  .jobDes .btnWrap {
+    padding-top: 1.2rem;
+    gap: 0.4rem;
+  }
+  .jobDes .btnWrap > button,
+  .jobDes .btnWrap > a {
+    height: 3.6rem;
+    padding: 0;
+    line-height: 0;
+    max-width: calc(50% - 0.3rem);
+    font-size: 1.4rem;
+  }
+  .jobItem .jobInfo .jobDes > div strong {
+    font-size: 1.8rem;
+  }
+}

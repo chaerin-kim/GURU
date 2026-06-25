@@ -1,0 +1,509 @@
+.topSection {
+  padding: 4.2rem 0;
+  border-top: 3px solid var(--cr-bl1);
+  border-bottom: 3px solid var(--cr-bl1);
+}
+.onLine.topSection {
+  background: var(--cr-m-y);
+}
+.offLine.topSection {
+  background: var(--cr-m-g);
+}
+.topSection > div {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+.topSection > div .thumb {
+  width: 12.6rem;
+  height: 12.6rem;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+.topSection > div .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--cr-w);
+}
+.topSection .titleWrap {
+  flex: 1;
+}
+.topSection .titleWrap h2 {
+  font-size: 3.4rem;
+  font-weight: 700;
+  line-height: 138%;
+  width: 100%;
+  padding: 0.5rem 0 1rem 0;
+}
+.topSection .titleWrap .cateWrap {
+  display: flex;
+  height: 3rem;
+  gap: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.topSection .cateWrap span {
+  display: flex;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0 1.6rem;
+  border-radius: 100rem;
+  color: rgba(0, 0, 0, 0.5);
+}
+.topSection .cateWrap span::before {
+  content: "#";
+  padding-right: 0.2rem;
+}
+.topSection .titleWrap .cateWrap > .status {
+  background: var(--cr-w);
+}
+.topSection .titleWrap .cateWrap > .status::before {
+  display: none;
+}
+.topSection .titleWrap .cateWrap > .status.stat1 {
+  background: #3483e5;
+  color: var(--cr-w);
+}
+.topSection .titleWrap .cateWrap > .status.stat2 {
+  color: #f7af15;
+}
+.topSection .titleWrap .cateWrap > .status.stat3 {
+  color: #5f5f5f;
+}
+.topSection .titleWrap .cateWrap > .status.stat5 {
+  color: #121212;
+}
+.topSection .titleWrap .cateWrap > .status.stat-1 {
+  background: var(--cr-red);
+  color: var(--cr-w);
+}
+
+.topSection .titleWrap label {
+  display: flex;
+  align-items: flex-end;
+}
+.topSection .titleWrap label strong {
+  font-size: 2.2rem;
+  font-weight: 700;
+  padding-right: 1rem;
+}
+.topSection .titleWrap label strong span {
+  font-size: 1.6rem;
+  opacity: 0.5;
+  padding-left: 0.3rem;
+}
+.topSection .titleWrap label > span {
+  font-weight: 800;
+}
+.topSection .titleWrap label progress {
+  position: relative;
+  transform: translateY(-0.5rem);
+  margin-left: 1rem;
+}
+.topSection .titleWrap label progress::-webkit-progress-bar {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.topSection .titleWrap label progress::-webkit-progress-value {
+  transition: 0.3s;
+  background-color: var(--cr-w);
+  border-radius: 100rem;
+}
+
+.topSection .nickName {
+  color: var(--cr-bl1);
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+.topSection .nickName span {
+  color: var(--cr-g1);
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+.midSection {
+  display: flex;
+  flex-direction: column;
+  min-height: 61vh;
+  padding: 4.4rem 0 8rem 0;
+}
+.midSection h2 {
+  padding-top: 3.8rem;
+}
+.midSection .midUl {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 2rem;
+  padding: 0 2rem;
+}
+.onLine.midSection .midUl {
+  background-color: rgba(255, 197, 72, 0.4);
+}
+.offLine.midSection .midUl {
+  background-color: rgba(48, 227, 185, 0.4);
+}
+.midSection .midUl li {
+  display: flex;
+  align-items: center;
+  padding: 3.4rem 2rem;
+  gap: 1.7rem;
+  font-weight: bold;
+}
+.midSection .midUl p {
+  display: flex;
+  flex-direction: column;
+  font-size: 2.4rem;
+}
+.midSection span {
+  padding-bottom: 0.4rem;
+  font-size: 1.6rem;
+  border-bottom: #5f5f5f;
+}
+.onLine.midSection span {
+  color: #987b16;
+}
+.offLine.midSection span {
+  color: #118468;
+}
+.midSection .midUl li i {
+  width: 5.1rem;
+  height: 5.1rem;
+  font-size: 1.8rem;
+  background-color: var(--cr-w);
+  border-radius: 100%;
+  position: relative;
+}
+.midSection .midUl li i::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.midSection .midUl li:nth-of-type(2) i::before {
+  transform: translate(-42%, -50%);
+}
+.onLine.midSection .midUl li i {
+  color: #e5aa2a;
+  border: 2px solid #6f480f;
+}
+.offLine.midSection .midUl li i {
+  color: #118468;
+  border: 2px solid #118468;
+}
+
+.border {
+  border: 2px solid var(--cr-bl1);
+}
+
+.midSection h2 {
+  font-size: 2.2rem;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 1.2rem;
+}
+.onLine.midSection h2 {
+  color: #e6aa2a;
+}
+.offLine.midSection h2 {
+  color: #118468;
+}
+.midSection > pre {
+  line-height: 2.4rem;
+  padding-bottom: 2.5rem;
+  color: #5f5f5f;
+  margin-top: 2.5rem;
+  block-size: auto;
+  border-bottom: 1px solid #dddddd;
+}
+.detailBtnWRap {
+  padding: 2.5rem 0;
+}
+.detailBtnWRap > button {
+  border-width: 1px;
+}
+.offLine.midSection .mapArea h2 {
+  display: flex;
+  align-items: center;
+  border-width: 0;
+  padding: 1.6rem 0 1.4rem 0;
+}
+.offLine.midSection .mapArea h2 span {
+  color: #5f5f5f;
+  font-weight: 400;
+  margin-left: 1.2rem;
+  padding-bottom: 0;
+}
+
+.offLine.midSection .mapArea > div {
+  width: 100%;
+  height: 34rem;
+  border: 1px solid var(--cr-line);
+}
+.offLine.midSection .mapArea > div > div {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1420px) {
+  .midSection .midUl {
+    gap: 1.5rem;
+    padding: 0 1.4rem;
+    justify-content: center;
+  }
+  .midSection .midUl li {
+    padding: 3.4rem 1.4rem;
+    gap: 1.7rem;
+  }
+}
+@media (max-width: 1240px) {
+  .midSection {
+    padding-top: 2rem;
+  }
+  .midSection .midUl {
+    justify-content: flex-start;
+    gap: 1.5rem;
+    padding: 0;
+  }
+  .midSection .midUl li {
+    width: calc(33.3% - 3rem / 3);
+    padding: 3rem 1.4rem;
+    gap: 1.6rem;
+  }
+  .midSection .midUl li > p {
+    font-size: 2.2rem;
+  }
+  .onLine.midSection .midUl,
+  .offLine.midSection .midUl {
+    background: transparent;
+  }
+  .onLine.midSection .midUl li {
+    background-color: rgba(255, 197, 72, 0.4);
+  }
+  .offLine.midSection .midUl li {
+    background-color: rgba(48, 227, 185, 0.4);
+  }
+}
+@media (max-width: 990px) {
+  .topSection {
+    padding: 2.8rem 0;
+  }
+  .topSection > div {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .topSection .titleWrap h2 {
+    font-size: 2.6rem;
+  }
+  .detail .topSection {
+    margin-bottom: 0;
+  }
+  .topSection > div .thumb {
+    width: 6.8rem;
+    height: 6.8rem;
+  }
+  .topSection .topTitle {
+    width: calc(100% - 6rem);
+    align-items: flex-start;
+  }
+  .midSection {
+    padding: 2rem 0;
+    min-height: auto;
+  }
+  .midSection .midUl {
+    gap: 1.3rem;
+  }
+  .midSection .midUl li {
+    width: calc(33.3% - 0.86rem);
+    padding: 3rem 1.4rem;
+    gap: 1.6rem;
+  }
+  .midSection .midUl li > p {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 760px) {
+  .midSection h2 {
+    font-size: 1.8rem;
+    padding: 2.6rem 0 1.2rem 0;
+  }
+  .midSection .midUl li i {
+    width: 4.7rem;
+    height: 4.7rem;
+    font-size: 1.4rem;
+  }
+  .midSection .midUl {
+    gap: 0.5em;
+  }
+  .midSection .midUl li {
+    width: calc(50% - 0.4rem);
+    padding: 1.6rem 1.4rem;
+    gap: 1.6rem;
+  }
+  .midSection .midUl li:last-of-type {
+    width: 100%;
+  }
+  .offLine.midSection .mapArea h2 {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .offLine.midSection .mapArea h2 span {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 0.5rem;
+  }
+}
+@media (max-width: 660px) {
+  .topSection {
+    padding: 2rem 0 5.8rem 0;
+    border-width: 2px;
+    position: relative;
+  }
+  .topSection > div {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.4rem;
+  }
+  .topSection > div .thumb {
+    width: 5.6rem;
+    height: 5.6rem;
+  }
+  .topSection .titleWrap h2 {
+    font-size: 2.1rem;
+    padding: 0.6rem 0 0.8rem 0;
+  }
+
+  .topSection .titleWrap .cateWrap {
+    height: 2.3rem;
+    gap: 0.4rem;
+    width: 100%;
+  }
+  .topSection .titleWrap .cateWrap span {
+    padding: 0 1.2rem;
+    font-size: 1.2rem;
+  }
+  .topSection .cateWrap span::before {
+    display: none;
+  }
+  .topSection .titleWrap label {
+    position: absolute;
+    width: calc(100% - 4.4rem);
+    bottom: 0;
+    left: 0;
+    transform: translate(2.2rem, -2.2rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+  }
+  .topSection .titleWrap label strong {
+    font-size: 1.5rem;
+    width: 100%;
+  }
+  .topSection .titleWrap label strong span,
+  .topSection .titleWrap span {
+    font-size: 1.3rem;
+  }
+  .topSection .titleWrap label progress {
+    width: calc(100% - 5rem);
+    transform: translateY(-0.2rem);
+    max-width: 26rem;
+    margin-left: 0.4rem;
+  }
+  .midSection h2 {
+    font-size: 1.6rem;
+    padding: 2.4rem 0 1.1rem 0;
+  }
+  .midSection .midUl {
+    gap: 0.4em;
+  }
+  .midSection .midUl li {
+    width: calc(50% - 0.32rem);
+    padding: 1.2rem 1.4rem;
+    gap: 1rem;
+  }
+  .onLine.midSection .midUl li i,
+  .offLine.midSection .midUl li i {
+    width: 3.6rem;
+    height: 3.6rem;
+    font-size: 1.1rem;
+    border-width: 0px;
+  }
+  .midSection .midUl li:last-of-type {
+    width: 100%;
+  }
+  .midSection .midUl li span {
+    font-size: 1.3rem;
+  }
+  .midSection .midUl li p {
+    font-size: 1.6rem;
+  }
+  .midSection > pre {
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .detailBtnWRap {
+    padding: 2.4rem 0;
+  }
+}
+
+@media (max-width: 386px) {
+  .topSection {
+    padding: 2rem 0 5rem 0;
+  }
+  .topSection > div {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.3rem;
+  }
+  .topSection > div .thumb {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .topSection .titleWrap .cateWrap {
+    height: 2.1rem;
+  }
+  .topSection .titleWrap .cateWrap span {
+    font-size: 1.1rem;
+  }
+  .topSection .titleWrap h2 {
+    padding: 0.8rem 0;
+    font-size: 2rem;
+  }
+  .topSection .titleWrap label strong {
+    font-size: 1.4rem;
+  }
+  .topSection .titleWrap label strong span,
+  .topSection .titleWrap span {
+    font-size: 1.2rem;
+  }
+  .midSection .midUl li {
+    padding: 1.2rem 0.8rem;
+    gap: 1rem;
+  }
+  .onLine.midSection .midUl li i,
+  .offLine.midSection .midUl li i {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+  .midSection .midUl li span {
+    font-size: 1.3rem;
+    font-weight: 400;
+  }
+  .midSection .midUl li p {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .midSection .midUl li p,
+  .midSection > pre {
+    font-size: 1.4rem;
+  }
+}

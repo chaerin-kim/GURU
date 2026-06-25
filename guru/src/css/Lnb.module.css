@@ -1,0 +1,123 @@
+.lnb ul li a {
+  font-size: 1.7rem;
+  font-weight: 600;
+  padding: 1rem 2rem 1rem 0;
+  display: inline-block;
+  color: var(--cr-g1);
+  transition: 0.3s;
+  background-size: 100% 0.5rem, 0 0.5rem;
+  background-position: 100% 100%, 0 calc(100% - 0.7rem);
+  background-repeat: no-repeat;
+  transition: 0.5s;
+  background-image: linear-gradient(transparent, transparent), linear-gradient(#ffc548c7, #ffc548c7);
+}
+
+.lnb ul li a.on {
+  color: var(--cr-b1);
+  background-size: 0 0.5rem, calc(100% - 2rem) 0.5rem;
+}
+
+.lnb ul li a:hover {
+  background-size: 0 0.5rem, calc(100% - 2rem) 0.5rem;
+}
+
+.filter {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.filter strong {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 1.7rem;
+  color: var(--cr-b1);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--cr-line);
+  position: relative;
+}
+
+.filter strong::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  font-size: 1.1rem;
+  transform: translateY(-50%) rotate(0);
+  transition: 0.3s;
+}
+.filter.on strong::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+.filter > div {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1.2rem 0 1rem 0;
+  gap: 0.8rem 0.6rem;
+}
+.filter > div > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  height: 3.2rem;
+  padding: 0 1.8rem;
+  font-size: 1.5rem;
+  border-radius: 50rem;
+  transition: 0.3s;
+}
+.filter > div > button.active {
+  border-color: var(--cr-bl1);
+  background: var(--cr-m-y);
+  color: var(--cr-bl1);
+  box-shadow: inset 0px 0px 0px 0.5px var(--cr-bl1);
+  font-weight: 500;
+}
+.offLine .filter > div > button.active {
+  background: var(--cr-m-g);
+}
+.filter > div > button:hover {
+  border-color: var(--cr-bl1);
+  color: var(--cr-bl1);
+}
+
+.rangeInput {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.rangeInput > div:first-of-type {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  padding: 0.9rem;
+}
+.rangeOutPut {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+}
+.rangeOutPut span {
+  font-size: 1.4rem;
+  color: var(--cr-g2);
+}
+.rangeOutPut span b {
+  font-weight: 800;
+  color: var(--cr-bl1);
+}
+
+@media (max-width: 990px) {
+  .lnb ul {
+    padding: 2rem 0 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

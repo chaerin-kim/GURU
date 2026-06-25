@@ -1,0 +1,508 @@
+/*common*/
+.formStyle {
+  width: 100%;
+}
+
+.modalprofile > h3 {
+  margin-bottom: 2.1rem;
+}
+.formStyle.formProfile {
+  flex-direction: row;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.formStyle > div.formContainer {
+  border: 3px solid var(--cr-bl1);
+  padding: 3.4rem 3.6rem;
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+.formStyle.formProfile > div.formContainer {
+  width: auto;
+}
+.formStyle.formProfile .formContainer:first-of-type {
+  padding: 3.4rem 4.6rem;
+}
+.formStyle.formProfile .formContainer:nth-of-type(2) {
+  flex: 1;
+}
+/* dd */
+.formProfile .formThumb {
+  width: 14.2rem;
+  height: 14.2rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  /* border: 2px solid var(--cr-bl1); */
+  cursor: pointer;
+}
+.formProfile .formThumb img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+}
+.formProfile .formThumb i {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  justify-content: center;
+  background-color: rgba(10, 10, 10, 0.5);
+  color: var(--cr-w);
+  font-size: 1.3rem;
+}
+/* 닉네임 */
+.formProfile .formContainer:first-of-type span {
+  color: var(--cr-bl1);
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+.formProfile .formContainer:first-of-type span > span {
+  color: var(--cr-g1);
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+.formProfile .formContainer progress {
+  width: 14.6rem;
+}
+
+.formProfile input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  opacity: 0;
+}
+
+.formStyle input {
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  height: 4.2rem;
+  line-height: 4.2rem;
+  color: var(--cr-bl1);
+  font-weight: 700;
+}
+.formStyle input:focus,
+.formStyle input:active {
+  border-bottom: 2px solid var(--cr-bl1);
+  background: #fff0d1;
+}
+.formStyle textarea::placeholder,
+.formStyle input::placeholder {
+  font-weight: 400;
+  color: var(--cr-g1);
+}
+
+.formGrup {
+  display: flex;
+  max-width: 50rem;
+}
+.formGrup .formCon {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 0;
+}
+.formGrup .formCon.addItem {
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+.formGrup .formCon.addItem input {
+  flex: 1;
+}
+.formGrup .formCon.addItem span {
+  color: var(--cr-bl1);
+  font-weight: 700;
+}
+.formGrup .formCon.addItem span.bur,
+span.bur {
+  color: var(--cr-g1);
+  font-weight: 400;
+}
+
+.formGrup .formCon.addItem .row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  gap: 1rem;
+}
+.formGrup .formCon.addItem .row.phone input {
+  text-align: center;
+}
+.formGrup .formCon.addItem .row > input {
+  flex: 1;
+}
+.formGrup .formCon.addItem .row > p {
+  width: 100%;
+}
+.formGrup .formCon.addItem span.red {
+  color: var(--cr-red);
+}
+.formGrup .formCon.addItem .formBtn1 {
+  background: var(--cr-m-g);
+  color: var(--cr-w);
+  padding: 0 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4.2rem;
+  min-width: 9.8rem;
+  line-height: 0;
+  border-radius: 0.4rem;
+}
+.formGrup .formCon.addItem .formBtn2 {
+  background: var(--cr-m-y);
+  color: var(--cr-bl1);
+  padding: 0 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4.2rem;
+  line-height: 0;
+  border-radius: 0.4rem;
+  min-width: 9.8rem;
+  font-weight: 600;
+  border: 2px solid var(--cr-bl1);
+}
+.formGrup .formCon.addItem .addBtn {
+  background: var(--cr-m-y);
+  color: var(--cr-bl1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid var(--cr-bl1);
+  width: 3.2rem;
+  height: 3.2rem;
+  font-size: 1.3rem;
+  text-shadow: 0 0 1px;
+  line-height: 0;
+}
+.formGrup .formCon.addItem .addBtn i {
+  position: relative;
+  top: 0.5px;
+}
+
+.selectWrap {
+  justify-content: space-between;
+}
+.formGrup .formCon input {
+  width: 100%;
+}
+.formGrup .formCon.dateWrap > div {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.formGrup textarea {
+  border: 1px solid #ccc;
+  width: 100%;
+  min-height: 15rem;
+  padding: 1.6rem;
+  line-height: 168%;
+  border-radius: 0.4rem;
+}
+
+.formGrup.has-error > span:first-of-type,
+.formGrup .error-message {
+  color: var(--cr-red);
+}
+.formGrup .error-message {
+  width: 100%;
+}
+.formGrup.has-error .formCon input {
+  border-bottom: 1px solid var(--cr-red);
+}
+.formGrup.has-error textarea {
+  border: 1px solid red;
+}
+
+.formGrup > span:first-of-type {
+  color: var(--cr-g1);
+  height: 4.2rem;
+  width: 13rem;
+  padding-top: 1.2rem;
+}
+
+.formGrup.formLabels label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 1.6rem;
+  cursor: pointer;
+}
+.formGrup.formLabels span {
+  font-weight: 500;
+}
+
+/*slelct*/
+.selectWrap {
+  display: flex;
+  align-items: center;
+}
+.selectWrap > span {
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+}
+.formStyle .select > div {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  /* border-bottom: 1px solid var(--cr-line); */
+  border-radius: 0;
+  background: none;
+  cursor: pointer;
+}
+.formStyle .has-error .select > div {
+  border-bottom: 1px solid var(--cr-red);
+}
+.formStyle .select {
+  min-width: 16rem;
+}
+.formStyle .select.selectFull {
+  flex: 1;
+}
+.formStyle .select > div:last-of-type {
+  background: var(--cr-w);
+}
+
+.formStyle .select > div > div:first-of-type,
+.formStyle .select > div > div:nth-of-type(2),
+.formStyle .select > div:first-of-type > div:first-of-type > div:nth-of-type(2) {
+  padding: 0;
+  margin: 0;
+}
+
+.formStyle .select > div > div:nth-of-type(2) > span {
+  display: none;
+}
+.formStyle .select > div > div:nth-of-type(2) > div {
+  padding-right: 0;
+}
+
+/*address*/
+
+.formGrup.address > div.flexWrap {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 37rem;
+  gap: 1.5rem 0.6rem;
+}
+.formGrup.address > div.flexWrap > .zonecode {
+  width: calc(100% - 11rem);
+  cursor: default;
+}
+.formGrup.address > div.flexWrap > .zonecode:active,
+.formGrup.address > div.flexWrap > .zonecode:focus {
+  background: var(--cr-w);
+  border-bottom: 1px solid #ccc;
+}
+
+.formGrup.address > div.flexWrap > .addressBtn {
+  width: 10rem;
+  height: 4.2rem;
+  line-height: 4.2rem;
+  background: var(--cr-m-g);
+  color: var(--cr-w);
+  border-radius: 0.4rem;
+}
+.formGrup.address > div.flexWrap > div,
+.formGrup.address > div.flexWrap > input {
+  width: 100%;
+}
+.formGrup.address > div > div {
+  border-bottom: 1px solid #ccc;
+  height: 4.2rem;
+  line-height: 4.2rem;
+  color: var(--cr-bl1);
+  font-weight: 700;
+}
+
+.addressModal > div {
+  padding-top: 2rem;
+  min-height: 40vh;
+}
+@media (max-width: 1120px) {
+  .modalprofile {
+    width: 100%;
+  }
+}
+@media (max-width: 830px) {
+  .formStyle > div.formContainer {
+    padding: 1.6rem;
+  }
+  .formStyle.formProfile {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .formStyle.formProfile .formContainer:first-of-type {
+    padding: 1rem 0 0 0;
+    border-width: 0;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .formStyle.formProfile .formContainer:first-of-type > span,
+  .formStyle.formProfile .formContainer:first-of-type > progress {
+    display: none;
+  }
+  .formProfile .formThumb {
+    margin-bottom: 0;
+  }
+}
+@media (max-width: 660px) {
+  .formStyle > div.formContainer {
+    padding: 2rem;
+    border-radius: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .formStyle input {
+    font-size: 1.8rem;
+    height: 5.2rem;
+    line-height: 5.2rem;
+  }
+  .formGrup {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+  .formGrup > span:first-of-type {
+    width: 100%;
+    height: auto;
+    padding: 1rem 0;
+    color: #f2ac18;
+    font-weight: 700;
+  }
+
+  .formGrup .formCon {
+    flex: auto;
+    width: 100%;
+  }
+
+  .formGrup.address > div.flexWrap {
+    max-width: 100%;
+    align-items: center;
+    /* gap: 1.5rem 0.6rem; */
+  }
+  .formGrup.address > div.flexWrap > .zonecode {
+    /* width: calc(100% - 11rem); */
+  }
+
+  .formGrup.address > div.flexWrap > .addressBtn {
+    width: 10rem;
+    font-size: 1.5rem;
+    height: 4.4rem;
+    line-height: 4.4rem;
+  }
+
+  .addressModal > div {
+    min-height: 60vh;
+  }
+
+  .selectWrap {
+    justify-content: flex-start;
+  }
+  .formGrup.formLabels label > span {
+    font-size: 1.8rem;
+    font-weight: 700;
+    padding-left: 0.5rem;
+  }
+
+  .formGrup.formLabels span {
+    font-weight: 500;
+  }
+  .formStyle .select {
+    min-width: auto;
+    flex: 1;
+  }
+  .formStyle .select > div:first-of-type > div:first-of-type > div:nth-of-type(1) {
+    font-size: 1.8rem;
+  }
+  .formGrup textarea {
+    width: 100%;
+    min-height: 30rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .formGrup .error-message {
+    padding-bottom: 1.6rem;
+  }
+}
+@media (max-width: 370px) {
+  .formStyle > div.formContainer {
+    padding: 1.6rem;
+    border-width: 2px;
+  }
+  .formGrup > span:first-of-type {
+    padding: 0.6rem 0 1rem 0;
+  }
+  .formStyle input {
+    font-size: 1.6rem;
+    height: 4.2rem;
+    line-height: 4.2rem;
+  }
+  .formGrup.address > div.flexWrap {
+    gap: 1rem 0.6rem;
+  }
+  .formGrup.address > div.flexWrap > .zonecode {
+    width: calc(100% - 8.5rem);
+  }
+  .formGrup.address > div.flexWrap > .addressBtn {
+    width: 7.5rem;
+    font-size: 1.4rem;
+    height: 3.8rem;
+    line-height: 3.8rem;
+  }
+  .formGrup.formLabels label > span,
+  .formStyle .select > div:first-of-type > div:first-of-type > div:nth-of-type(1),
+  .formGrup textarea {
+    font-size: 1.6rem;
+  }
+  .formGrup .error-message {
+    padding-bottom: 1rem;
+  }
+
+  .formGrup .formCon.addItem .row.phone input {
+    text-align: center;
+  }
+  .formGrup .formCon.addItem .formBtn1 {
+    width: 100%;
+  }
+  .formGrup .formCon.addItem .formBtn2 {
+    min-width: auto;
+  }
+  .formGrup .formCon.addItem .addBtn {
+    background: var(--cr-m-y);
+    color: var(--cr-bl1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid var(--cr-bl1);
+    width: 3.2rem;
+    height: 3.2rem;
+    font-size: 1.3rem;
+    text-shadow: 0 0 1px;
+    line-height: 0;
+  }
+  .formGrup .formCon.addItem .addBtn i {
+    position: relative;
+    top: 0.5px;
+  }
+}

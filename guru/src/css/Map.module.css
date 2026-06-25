@@ -1,0 +1,144 @@
+.wrap {
+  position: absolute;
+  left: 0;
+  bottom: 5.5rem;
+  width: 28.8rem;
+  margin-left: -14.4rem;
+  text-align: left;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+.wrap * {
+  padding: 0;
+  margin: 0;
+}
+.wrap .info {
+  width: 28.6rem;
+  border-radius: 0.5rem;
+  border-bottom: 0.2rem solid #ccc;
+  border-right: 0.1rem solid #ccc;
+  background: #fff;
+}
+.wrap .info:nth-child(1) {
+  border: 0;
+  box-shadow: 0 0.1rem 0.2rem #888;
+}
+
+.info .title {
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--cr-m-g);
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: white;
+}
+.info .close {
+  color: white;
+  background-color: transparent;
+}
+.info .close:hover {
+  cursor: pointer;
+}
+.info .body {
+  position: relative;
+  overflow: hidden;
+}
+.info .body.positionJob {
+  cursor: default;
+  /* zoom: 0.9; */
+  overflow-y: auto;
+  height: 14rem;
+}
+
+.info .desc {
+  position: relative;
+  margin: 1.3rem 0 0 9rem;
+  height: 7.5rem;
+}
+.desc .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.desc .date {
+  font-size: 1.1rem;
+  color: #888;
+  line-height: 2rem;
+}
+.info .img {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 6rem;
+  height: 6rem;
+  border: 0.1rem solid #ddd;
+  color: #888;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.info .img img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.info:after {
+  content: "";
+  position: absolute;
+  margin-left: -1.2rem;
+  left: 50%;
+  bottom: -1.2rem;
+  width: 2.2rem;
+  height: 1.2rem;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+}
+.info .link {
+  color: #5085bb;
+}
+/* content2 */
+.jobGroup {
+}
+.jobItem {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--cr-line);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.sametitle {
+  font-size: medium;
+}
+.info .body.positionJob .jobItem:last-of-type {
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+.mapFallback {
+  width: 100%;
+  height: 100%;
+  min-height: 25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.mapFallback strong {
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.mapFallback span {
+  color: #666;
+  font-size: 1.5rem;
+  line-height: 1.45;
+}
