@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
+import { getMockFindJobs } from "../mock/jobs";
 import MainJobItem from "./MainJobItem";
 import Map from "../pages/Map";
 import style from "../css/Main.module.css";
@@ -30,6 +31,11 @@ const MainOffline = () => {
   };
 
   useEffect(() => {
+    if (isMockMode) {
+      setJobList(getMockFindJobs({ jobType: "offLine" }).slice(0, 3));
+      return;
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {

@@ -1,7 +1,8 @@
 /* global kakao */
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
+import { getMockUser } from "../mock/jobs";
 import styles from "../css/Map.module.css";
 
 // Kakao Maps API 스크립트를 동적으로 추가하는 함수
@@ -111,6 +112,10 @@ const Map = ({ jobList, location }) => {
   }, [location, map]);
 
   const fetchUser = async (emailID) => {
+    if (isMockMode) {
+      return getMockUser(emailID);
+    }
+
     try {
       const response = await fetch(`${url}/findUserData/${emailID}`);
       if (!response.ok) {

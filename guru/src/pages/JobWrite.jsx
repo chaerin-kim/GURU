@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { setPageInfo } from "../store/pageInfo";
 import { useForm, Controller } from "react-hook-form";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
 import DatePicker from "react-datepicker";
 import { enUS, ko } from "date-fns/locale";
 import Select from "react-select";
@@ -212,6 +212,11 @@ const JobWrit = () => {
     const { title, endDate, detailedAddress, pay, cateTalent, cateField, desc } = data;
     const token = localStorage.getItem("token");
     if (workStartTime && workEndTime) {
+      if (isMockMode) {
+        showAlert("WriteOk");
+        return;
+      }
+
       const workStartTimeUTC = new Date(workStartTime.value).toISOString();
       const workEndTimeUTC = new Date(workEndTime.value).toISOString();
       const response = await fetch(`${url}/jobWrit`, {

@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { setDates } from "../store/findjob";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
+import { getMockUser } from "../mock/jobs";
 import style from "../css/Main.module.css";
 
 const MainJobItem = ({ item, tpye }) => {
@@ -58,6 +59,11 @@ const MainJobItem = ({ item, tpye }) => {
   /* 작성자 확인 */
   useEffect(() => {
     if (item?.emailID) {
+      if (isMockMode) {
+        setAuthor(getMockUser(item.emailID));
+        return;
+      }
+
       const fetchUser = async () => {
         try {
           const res = await fetch(`${url}/findUserData/${item.emailID}`);

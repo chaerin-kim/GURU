@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
+import { getMockFindJobs } from "../mock/jobs";
 import MainJobItem from "./MainJobItem";
 import style from "../css/Main.module.css";
 
@@ -8,6 +9,11 @@ const MainOnline = () => {
   const { t } = useTranslation();
   const [jobList, setJobList] = useState([]);
   useEffect(() => {
+    if (isMockMode) {
+      setJobList(getMockFindJobs({ jobType: "onLine" }).slice(0, 3));
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const response = await fetch(`${url}/mainOnline`, {

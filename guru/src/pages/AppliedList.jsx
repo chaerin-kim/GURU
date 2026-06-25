@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { setPageInfo } from "../store/pageInfo";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
+import { getMockAppliedJobs } from "../mock/jobs";
 import Loading from "../components/Loading";
 import Modal from "../components/Modal";
 import ModalAlert from "../components/ModalAlert";
@@ -60,6 +61,14 @@ const AppliedList = () => {
     const token = localStorage.getItem("token");
     if (loading) return;
     setLoading(true);
+    if (isMockMode) {
+      const mockData = getMockAppliedJobs({ jobType, status });
+      setJobList(reset ? mockData : (prevJobList) => [...prevJobList, ...mockData]);
+      setTotalJobs(mockData.length);
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch(`${url}/applied?page=${page}&jobType=${jobType}&status=${status}`, {
         method: "GET",

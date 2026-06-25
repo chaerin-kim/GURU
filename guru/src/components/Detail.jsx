@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDates } from '../store/findjob';
 import { updateItemStatus } from '../store/updateItemStatus';
-import { url } from '../store/ref';
+import { isMockMode, url } from '../store/ref';
+import { getMockUser, mockJobs } from '../mock/jobs';
 import Modal from '../components/Modal';
 import ModalAlert from '../components/ModalAlert';
 import SatisfactionModal from './SatisfactionModal';
@@ -54,6 +55,25 @@ const Detail = ({ _id, closeDetail }) => {
     if (!_id) {
       showAlert('none_id');
     } else {
+      if (isMockMode) {
+        const result = mockJobs.find((job) => job._id === _id);
+        if (!result) {
+          showAlert('none_id');
+          return;
+        }
+        dispatch(
+          updateItemStatus({
+            id: _id,
+            status: result.status,
+            applicants: result.applicants,
+          })
+        );
+        setStatus(result.applicants);
+        setBtnWrapStatus(result.status);
+        setItem(result);
+        return;
+      }
+
       const fetchJob = async () => {
         try {
           const res = await fetch(`${url}/JobDetail/${_id}`);
@@ -95,6 +115,11 @@ const Detail = ({ _id, closeDetail }) => {
 
   useEffect(() => {
     if (item?.emailID) {
+      if (isMockMode) {
+        setAuthor(getMockUser(item.emailID));
+        return;
+      }
+
       const fetchUser = async () => {
         try {
           const res = await fetch(`${url}/findUserData/${item.emailID}`);
@@ -134,6 +159,11 @@ const Detail = ({ _id, closeDetail }) => {
   }, [modalAlert, navigate, closeDetail]);
 
   const deleteJob = useCallback(async () => {
+    if (isMockMode) {
+      showAlert('deleteOk');
+      return;
+    }
+
     try {
       const response = await fetch(`${url}/deleteJob/${_id}`, {
         method: 'DELETE',
@@ -148,6 +178,11 @@ const Detail = ({ _id, closeDetail }) => {
   }, [_id, showAlert]);
 
   const application = async () => {
+    if (isMockMode) {
+      showAlert('appOk');
+      return;
+    }
+
     const token = localStorage.getItem('token');
     try {
       const response = await fetch(`${url}/application/${_id}`, {
@@ -178,6 +213,11 @@ const Detail = ({ _id, closeDetail }) => {
   };
 
   const appCancell = async () => {
+    if (isMockMode) {
+      showAlert('appCencellOk');
+      return;
+    }
+
     const token = localStorage.getItem('token');
     try {
       const response = await fetch(`${url}/appCancell/${_id}`, {

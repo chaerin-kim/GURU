@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { setDates } from "../store/findjob";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
+import { getMockUser } from "../mock/jobs";
 import Modal from "../components/Modal";
 import ModalAlert from "../components/ModalAlert";
 import Detail from "./Detail";
@@ -75,6 +76,11 @@ const JobItem = ({ item, jobOffer, findjob }) => {
   /* 작성자 확인 */
   useEffect(() => {
     if (item?.emailID) {
+      if (isMockMode) {
+        setAuthor(getMockUser(item.emailID));
+        return;
+      }
+
       const fetchUser = async () => {
         try {
           const res = await fetch(`${url}/findUserData/${item.emailID}`);

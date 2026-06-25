@@ -2,7 +2,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useCallback, useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import UserProfile from "./UserProfile";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
+import { getMockUsers } from "../mock/jobs";
 import ProgressBar from "./ProgressBar";
 
 const UserSlide = ({ item }) => {
@@ -35,6 +36,11 @@ const UserSlide = ({ item }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (itemAppli) {
+        if (isMockMode) {
+          setUserList(getMockUsers(itemAppli));
+          return;
+        }
+
         try {
           const response = await fetch(`${url}/userList`, {
             method: "POST",

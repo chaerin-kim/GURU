@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { setCateType } from "../store/findjob";
 import { setCateField, setCateTalent } from "../store/filter";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
+import { getMockFindJobs } from "../mock/jobs";
 import Loading from "../components/Loading";
 import JobItem from "../components/JobItem";
 import Filter from "../components/Filter";
@@ -98,6 +99,14 @@ const fetchData = async (page, talent, field, cateTime, reset) => {
 };
 
 const fetchJobs = async (endpoint, page, talent, field, cateTime, queryType, reset) => {
+  if (isMockMode) {
+    const mockData = getMockFindJobs({ jobType: cateType, talent, field });
+    setTotalJobs(mockData.length);
+    setJobList(reset ? mockData : (prevJobList) => [...prevJobList, ...mockData]);
+    setLoading(false);
+    return;
+  }
+
   try {
     const response = await fetch(`${url}/${endpoint}?page=${page}&talent=${talent}&field=${field}&startCateTime=${cateTime[0]}&endCateTime=${cateTime[1]}${queryType}`, {
       method: "GET",
@@ -126,6 +135,16 @@ const fetchJobs = async (endpoint, page, talent, field, cateTime, queryType, res
 
 
   const searchTitle = async () => {
+    if (isMockMode) {
+      const mockData = getMockFindJobs({ jobType: cateType, titleText });
+      setJobList(mockData);
+      setTotalJobs(mockData.length);
+      setTitleText("");
+      disableScroll();
+      setLoading(false);
+      return;
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
