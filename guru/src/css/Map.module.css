@@ -132,8 +132,8 @@
   overflow: hidden;
   border-radius: 0.4rem;
   background:
-    linear-gradient(135deg, rgba(32, 196, 158, 0.18), rgba(255, 255, 255, 0.12)),
-    linear-gradient(90deg, #e8f6f2 0 24%, #f7fbf7 24% 48%, #e4f0ec 48% 72%, #f9f7ed 72% 100%);
+    linear-gradient(135deg, rgba(32, 196, 158, 0.12), rgba(255, 255, 255, 0.2)),
+    linear-gradient(90deg, #e8f6f2 0 35%, #f7fbf7 35% 66%, #edf3ee 66% 100%);
 }
 
 .mockGrid {
@@ -149,31 +149,30 @@
 .mockRoadPrimary,
 .mockRoadSecondary {
   position: absolute;
-  left: -10%;
-  right: -10%;
-  height: 5.8rem;
-  border: 0.2rem solid rgba(255, 255, 255, 0.85);
-  background: rgba(245, 202, 115, 0.8);
-  box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.08);
+  left: -8%;
+  right: -8%;
+  height: 4rem;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 0 0 0.1rem rgba(17, 17, 17, 0.04);
 }
 
 .mockRoadPrimary {
-  top: 50%;
-  transform: rotate(-12deg);
+  top: 56%;
+  transform: rotate(-10deg);
 }
 
 .mockRoadSecondary {
-  top: 28%;
-  height: 3.8rem;
-  transform: rotate(28deg);
-  background: rgba(219, 232, 227, 0.92);
+  top: 30%;
+  height: 3.2rem;
+  transform: rotate(24deg);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .mockMarker {
   position: absolute;
   z-index: 2;
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.4rem;
+  height: 2.4rem;
   border: 0.3rem solid #111;
   border-radius: 50%;
   background: var(--cr-m-g);
@@ -186,9 +185,9 @@
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -0.7rem;
-  width: 1.2rem;
-  height: 1.2rem;
+  bottom: -0.6rem;
+  width: 1rem;
+  height: 1rem;
   border-right: 0.3rem solid #111;
   border-bottom: 0.3rem solid #111;
   background: var(--cr-m-g);
@@ -199,7 +198,7 @@
   position: absolute;
   left: 50%;
   bottom: calc(100% + 1.2rem);
-  max-width: 20rem;
+  max-width: 22rem;
   padding: 0.7rem 1rem;
   border: 0.2rem solid #111;
   border-radius: 0.4rem;
@@ -207,9 +206,18 @@
   background: #fff;
   font-size: 1.3rem;
   font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
   transform: translateX(-50%);
   box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.12);
+}
+
+.mockMarker:hover span,
+.mockMarker:focus-visible span {
+  opacity: 1;
 }
 
 .mockLegend {
@@ -221,9 +229,9 @@
   flex-direction: column;
   gap: 0.2rem;
   padding: 1.2rem 1.4rem;
-  border: 0.2rem solid rgba(17, 17, 17, 0.85);
+  border: 0.1rem solid rgba(17, 17, 17, 0.16);
   border-radius: 0.4rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   color: #111;
 }
 

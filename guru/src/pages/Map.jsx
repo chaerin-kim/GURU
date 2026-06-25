@@ -229,33 +229,28 @@ const Map = ({ jobList = [], location = {} }) => {
   }, [map, jobList, createMarker, markers.length]);
 
   if (shouldShowMockMap) {
-    const validJobs = jobList.filter((job) => job.location?.mapX && job.location?.mapY);
-    const baseLon = Number(location.lon || 126.965706);
-    const baseLat = Number(location.lat || 37.529325);
-    const xValues = validJobs.map((job) => Number(job.location.mapX));
-    const yValues = validJobs.map((job) => Number(job.location.mapY));
-    const minX = Math.min(...xValues, baseLon);
-    const maxX = Math.max(...xValues, baseLon);
-    const minY = Math.min(...yValues, baseLat);
-    const maxY = Math.max(...yValues, baseLat);
-    const rangeX = maxX - minX || 0.01;
-    const rangeY = maxY - minY || 0.01;
+    const displayJobs = jobList.filter(Boolean);
+    const markerPositions = [
+      { left: 32, top: 42 },
+      { left: 68, top: 58 },
+      { left: 46, top: 68 },
+      { left: 76, top: 34 },
+    ];
 
     return (
       <div className={styles.mockMap} aria-label="Demo job map">
         <div className={styles.mockGrid}></div>
         <div className={styles.mockRoadPrimary}></div>
         <div className={styles.mockRoadSecondary}></div>
-        {validJobs.map((job) => {
-          const left = 12 + ((Number(job.location.mapX) - minX) / rangeX) * 76;
-          const top = 78 - ((Number(job.location.mapY) - minY) / rangeY) * 62;
+        {displayJobs.map((job, index) => {
+          const position = markerPositions[index % markerPositions.length];
 
           return (
             <button
               key={job._id}
               type="button"
               className={styles.mockMarker}
-              style={{ left: `${left}%`, top: `${top}%` }}
+              style={{ left: `${position.left}%`, top: `${position.top}%` }}
               title={job.title}
               onClick={() => navigate("/job-detail", { state: { _id: job._id } })}
             >
@@ -265,7 +260,7 @@ const Map = ({ jobList = [], location = {} }) => {
         })}
         <div className={styles.mockLegend}>
           <strong>Demo Map</strong>
-          <span>{validJobs.length} jobs nearby</span>
+          <span>{displayJobs.length} jobs nearby</span>
         </div>
       </div>
     );
