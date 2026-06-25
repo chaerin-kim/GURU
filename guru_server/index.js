@@ -443,7 +443,8 @@ app.post("/findacct/pw", async (req, res) => {
     user.resetPwExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
-    const resetLink = `https://hpe-guru.netlify.app/resetpassword?token=${resetToken}&email=${emailID}`;
+    const frontendUrl = process.env.FRONTEND_URL || "https://hpe-guru.netlify.app";
+    const resetLink = `${frontendUrl}/resetpassword?token=${resetToken}&email=${emailID}`;
 
     const mailOptions = {
       from: process.env.NAVER_EMAIL,
