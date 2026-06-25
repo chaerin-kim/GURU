@@ -230,37 +230,24 @@ const Map = ({ jobList = [], location = {} }) => {
 
   if (shouldShowMockMap) {
     const displayJobs = jobList.filter(Boolean);
-    const markerPositions = [
-      { left: 32, top: 42 },
-      { left: 68, top: 58 },
-      { left: 46, top: 68 },
-      { left: 76, top: 34 },
-    ];
+    const validJobs = displayJobs.filter((job) => job.location?.mapX && job.location?.mapY);
+    const firstJob = validJobs[0];
+    const centerLat = Number(firstJob?.location?.mapY || location.lat || 37.529325);
+    const centerLon = Number(firstJob?.location?.mapX || location.lon || 126.965706);
+    const lonValues = validJobs.map((job) => Number(job.location.mapX));
+    const latValues = validJobs.map((job) => Number(job.location.mapY));
+    const minLon = Math.min(...lonValues, centerLon) - 0.02;
+    const maxLon = Math.max(...lonValues, centerLon) + 0.02;
+    const minLat = Math.min(...latValues, centerLat) - 0.015;
+    const maxLat = Math.max(...latValues, centerLat) + 0.015;
+    const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${minLon}%2C${minLat}%2C${maxLon}%2C${maxLat}&layer=mapnik&marker=${centerLat}%2C${centerLon}`;
 
     return (
-      <div className={styles.mockMap} aria-label="Demo job map">
-        <div className={styles.mockGrid}></div>
-        <div className={styles.mockRoadPrimary}></div>
-        <div className={styles.mockRoadSecondary}></div>
-        {displayJobs.map((job, index) => {
-          const position = markerPositions[index % markerPositions.length];
-
-          return (
-            <button
-              key={job._id}
-              type="button"
-              className={styles.mockMarker}
-              style={{ left: `${position.left}%`, top: `${position.top}%` }}
-              title={job.title}
-              onClick={() => navigate("/job-detail", { state: { _id: job._id } })}
-            >
-              <span>{job.title}</span>
-            </button>
-          );
-        })}
-        <div className={styles.mockLegend}>
-          <strong>Demo Map</strong>
-          <span>{displayJobs.length} jobs nearby</span>
+      <div className={styles.mockMap} aria-label="Job location map">
+        <iframe className={styles.osmFrame} title="Job location map" src={mapSrc} loading="lazy"></iframe>
+        <div className={styles.mapSummary}>
+          <strong>{displayJobs.length}</strong>
+          <span>offline jobs</span>
         </div>
       </div>
     );
