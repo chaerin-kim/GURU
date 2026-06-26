@@ -118,8 +118,14 @@
   border-bottom: 0;
 }
 
-.map {
+.mapShell {
   position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 25rem;
+}
+
+.map {
   width: 100%;
   height: 100%;
   min-height: 25rem;
@@ -131,6 +137,42 @@
 
 .map:active {
   cursor: grabbing;
+}
+
+.zoomControls {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid var(--cr-bl1);
+  border-radius: 0.6rem;
+  background: var(--cr-w);
+  box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.16);
+}
+
+.zoomControls button {
+  width: 4rem;
+  height: 3.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cr-bl1);
+  background: var(--cr-w);
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.zoomControls button + button {
+  border-top: 2px solid var(--cr-bl1);
+}
+
+.zoomControls button:hover {
+  background: var(--cr-m-y);
 }
 
 .mapFallback {

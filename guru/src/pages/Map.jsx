@@ -145,8 +145,8 @@ const Map = ({ jobList = [], location = {} }) => {
     let lastPoint = null;
     let wheelDelta = 0;
     let lastZoomAt = 0;
-    const zoomThreshold = 260;
-    const zoomInterval = 220;
+    const zoomThreshold = 520;
+    const zoomInterval = 420;
 
     const moveMapByPixels = (dx, dy) => {
       const projection = map.getProjection();
@@ -225,6 +225,17 @@ const Map = ({ jobList = [], location = {} }) => {
       console.error("Failed to fetch data", error);
       return null;
     }
+  };
+
+  const changeMapLevel = (direction) => {
+    if (!map) return;
+    map.setLevel(clampMapLevel(map.getLevel() + direction));
+  };
+
+  const handleZoomButtonClick = (event, direction) => {
+    event.preventDefault();
+    event.stopPropagation();
+    changeMapLevel(direction);
   };
 
   const createOverlayContent = (job, imgSrc, workStartDate, workEndDate, isSamePositionJob, groupContent, groupIndex) => `
@@ -335,7 +346,21 @@ const Map = ({ jobList = [], location = {} }) => {
     );
   }
 
-  return <div ref={mapContainerRef} className={styles.map}></div>;
+  return (
+    <div className={styles.mapShell}>
+      <div ref={mapContainerRef} className={styles.map}></div>
+      {map && (
+        <div className={styles.zoomControls} aria-label="Map zoom controls">
+          <button type="button" aria-label="Zoom in" title="Zoom in" onClick={(event) => handleZoomButtonClick(event, -1)}>
+            +
+          </button>
+          <button type="button" aria-label="Zoom out" title="Zoom out" onClick={(event) => handleZoomButtonClick(event, 1)}>
+            -
+          </button>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Map;
