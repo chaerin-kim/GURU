@@ -58,6 +58,7 @@ const Map = ({ jobList = [], location = {} }) => {
   const [mapErrorMessage, setMapErrorMessage] = useState("");
   const [markers, setMarkers] = useState([]);
   const [samePositionJobs, setSamePositionJobs] = useState([]);
+  const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const lastCenteredLocationRef = useRef(null);
   const hasMapKey = Boolean(process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY);
@@ -90,7 +91,7 @@ const Map = ({ jobList = [], location = {} }) => {
 
     loadKakaoMapScript(
       () => {
-        const mapContainer = document.getElementById("map");
+        const mapContainer = mapContainerRef.current;
         if (!mapContainer) {
           setMapErrorMessage("Map container was not found.");
           setMapFailed(true);
@@ -111,6 +112,11 @@ const Map = ({ jobList = [], location = {} }) => {
         mapRef.current = kakaoMap;
         lastCenteredLocationRef.current = `${location.lat},${location.lon}`;
         setMap(kakaoMap);
+
+        window.requestAnimationFrame(() => {
+          kakaoMap.relayout();
+          kakaoMap.setCenter(new kakao.maps.LatLng(location.lat, location.lon));
+        });
       },
       (message) => {
         setMapErrorMessage(message);
@@ -253,7 +259,7 @@ const Map = ({ jobList = [], location = {} }) => {
     );
   }
 
-  return <div id="map" className={styles.map}></div>;
+  return <div ref={mapContainerRef} className={styles.map}></div>;
 };
 
 export default Map;
