@@ -62,6 +62,7 @@ const Map = ({ jobList = [], location = {} }) => {
   const [markers, setMarkers] = useState([]);
   const [samePositionJobs, setSamePositionJobs] = useState([]);
   const mapContainerRef = useRef(null);
+  const gestureLayerRef = useRef(null);
   const mapRef = useRef(null);
   const lastCenteredLocationRef = useRef(null);
   const hasMapKey = Boolean(process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY);
@@ -136,6 +137,121 @@ const Map = ({ jobList = [], location = {} }) => {
       lastCenteredLocationRef.current = nextLocationKey;
     }
   }, [location.lat, location.lon, map]);
+
+  const panMapByPixels = useCallback((dx, dy) => {
+    const currentMap = mapRef.current;
+    if (!currentMap) return;
+
+    if (typeof currentMap.panBy === "function") {
+      currentMap.panBy(-dx, -dy);
+      return;
+    }
+
+    const projection = currentMap.getProjection?.();
+    if (!projection || !window.kakao?.maps?.Point) return;
+
+    const center = currentMap.getCenter();
+    const centerPoint =
+      typeof projection.containerPointFromCoords === "function"
+        ? projection.containerPointFromCoords(center)
+        : typeof projection.pointFromCoords === "function"
+        ? projection.pointFromCoords(center)
+        : null;
+
+    if (!centerPoint) return;
+
+    const nextPoint = new kakao.maps.Point(centerPoint.x - dx, centerPoint.y - dy);
+    const nextCenter =
+      typeof projection.coordsFromContainerPoint === "function"
+        ? projection.coordsFromContainerPoint(nextPoint)
+        : typeof projection.coordsFromPoint === "function"
+        ? projection.coordsFromPoint(nextPoint)
+        : null;
+
+    if (nextCenter) {
+      currentMap.setCenter(nextCenter);
+    }
+  }, []);
+
+  useEffect(() => {
+    const layer = gestureLayerRef.current;
+    if (!map || !layer) return;
+
+    let isDragging = false;
+    let lastX = 0;
+    let lastY = 0;
+    let wheelDelta = 0;
+    let lastWheelZoomAt = 0;
+
+    const updateLevel = (direction) => {
+      const currentMap = mapRef.current;
+      if (!currentMap) return;
+      currentMap.setLevel(clampMapLevel(currentMap.getLevel() + direction));
+    };
+
+    const onPointerDown = (event) => {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      event.stopPropagation();
+      isDragging = true;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      layer.classList.add(styles.dragging);
+      layer.setPointerCapture?.(event.pointerId);
+    };
+
+    const onPointerMove = (event) => {
+      if (!isDragging) return;
+      event.preventDefault();
+      event.stopPropagation();
+
+      const dx = event.clientX - lastX;
+      const dy = event.clientY - lastY;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+
+      lastX = event.clientX;
+      lastY = event.clientY;
+      panMapByPixels(dx, dy);
+    };
+
+    const stopDragging = (event) => {
+      if (!isDragging) return;
+      event.preventDefault();
+      event.stopPropagation();
+      isDragging = false;
+      layer.classList.remove(styles.dragging);
+      layer.releasePointerCapture?.(event.pointerId);
+    };
+
+    const onWheel = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      wheelDelta += event.deltaY;
+      const now = Date.now();
+      if (Math.abs(wheelDelta) < 900 || now - lastWheelZoomAt < 450) return;
+
+      updateLevel(wheelDelta > 0 ? 1 : -1);
+      wheelDelta = 0;
+      lastWheelZoomAt = now;
+    };
+
+    layer.addEventListener("pointerdown", onPointerDown);
+    layer.addEventListener("pointermove", onPointerMove);
+    layer.addEventListener("pointerup", stopDragging);
+    layer.addEventListener("pointercancel", stopDragging);
+    layer.addEventListener("mouseleave", stopDragging);
+    layer.addEventListener("wheel", onWheel, { passive: false });
+
+    return () => {
+      layer.removeEventListener("pointerdown", onPointerDown);
+      layer.removeEventListener("pointermove", onPointerMove);
+      layer.removeEventListener("pointerup", stopDragging);
+      layer.removeEventListener("pointercancel", stopDragging);
+      layer.removeEventListener("mouseleave", stopDragging);
+      layer.removeEventListener("wheel", onWheel);
+    };
+  }, [map, panMapByPixels]);
 
   const fetchUser = async (emailID) => {
     if (isMockMode) {
@@ -276,6 +392,7 @@ const Map = ({ jobList = [], location = {} }) => {
   return (
     <div className={styles.mapShell}>
       <div ref={mapContainerRef} className={styles.map}></div>
+      {map && <div ref={gestureLayerRef} className={styles.gestureLayer} aria-hidden="true"></div>}
       {map && (
         <div className={styles.zoomControls} aria-label="Map zoom controls">
           <button type="button" aria-label="Zoom in" title="Zoom in" onClick={(event) => handleZoomButtonClick(event, -1)}>
