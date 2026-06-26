@@ -51,6 +51,8 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString("ko-KR", options);
 };
 
+const clampMapLevel = (level) => Math.max(1, Math.min(14, level));
+
 const Map = ({ jobList = [], location = {} }) => {
   const navigate = useNavigate();
   const [map, setMap] = useState(null);
@@ -133,6 +135,68 @@ const Map = ({ jobList = [], location = {} }) => {
       lastCenteredLocationRef.current = nextLocationKey;
     }
   }, [location.lat, location.lon, map]);
+
+  useEffect(() => {
+    const mapContainer = mapContainerRef.current;
+    if (!map || !mapContainer) return;
+
+    let isDragging = false;
+    let lastPoint = null;
+
+    const moveMapByPixels = (dx, dy) => {
+      const projection = map.getProjection();
+      const centerPoint = projection.containerPointFromCoords(map.getCenter());
+      const nextPoint = new kakao.maps.Point(centerPoint.x - dx, centerPoint.y - dy);
+      map.setCenter(projection.coordsFromContainerPoint(nextPoint));
+    };
+
+    const handlePointerDown = (event) => {
+      if (event.button !== 0) return;
+      isDragging = true;
+      lastPoint = { x: event.clientX, y: event.clientY };
+      mapContainer.setPointerCapture?.(event.pointerId);
+    };
+
+    const handlePointerMove = (event) => {
+      if (!isDragging || !lastPoint) return;
+
+      const dx = event.clientX - lastPoint.x;
+      const dy = event.clientY - lastPoint.y;
+      if (dx === 0 && dy === 0) return;
+
+      event.preventDefault();
+      moveMapByPixels(dx, dy);
+      lastPoint = { x: event.clientX, y: event.clientY };
+    };
+
+    const stopDragging = (event) => {
+      isDragging = false;
+      lastPoint = null;
+      mapContainer.releasePointerCapture?.(event.pointerId);
+    };
+
+    const handleWheel = (event) => {
+      event.preventDefault();
+      const nextLevel = clampMapLevel(map.getLevel() + (event.deltaY > 0 ? 1 : -1));
+      map.setLevel(nextLevel);
+    };
+
+    mapContainer.addEventListener("pointerdown", handlePointerDown);
+    mapContainer.addEventListener("pointermove", handlePointerMove);
+    mapContainer.addEventListener("pointerup", stopDragging);
+    mapContainer.addEventListener("pointercancel", stopDragging);
+    mapContainer.addEventListener("mouseleave", stopDragging);
+    mapContainer.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      mapContainer.removeEventListener("pointerdown", handlePointerDown);
+      mapContainer.removeEventListener("pointermove", handlePointerMove);
+      mapContainer.removeEventListener("pointerup", stopDragging);
+      mapContainer.removeEventListener("pointercancel", stopDragging);
+      mapContainer.removeEventListener("mouseleave", stopDragging);
+      mapContainer.removeEventListener("wheel", handleWheel);
+    };
+  }, [map]);
 
   const fetchUser = async (emailID) => {
     if (isMockMode) {
