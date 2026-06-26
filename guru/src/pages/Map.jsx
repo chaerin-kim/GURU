@@ -13,7 +13,7 @@ const loadKakaoMapScript = (callback, onError) => {
 
   const appKey = process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY;
   if (!appKey) {
-    onError?.();
+    onError?.("Missing Netlify environment variable: REACT_APP_MAP_JAVASCRIPT_APPKEY");
     return;
   }
 
@@ -23,10 +23,10 @@ const loadKakaoMapScript = (callback, onError) => {
       if (window.kakao && window.kakao.maps) {
         window.kakao.maps.load(callback);
       } else {
-        onError?.();
+        onError?.("Kakao Maps SDK loaded, but window.kakao.maps is unavailable.");
       }
     });
-    existingScript.addEventListener("error", () => onError?.());
+    existingScript.addEventListener("error", () => onError?.("Failed to load Kakao Maps SDK script."));
     return;
   }
 
@@ -39,10 +39,10 @@ const loadKakaoMapScript = (callback, onError) => {
     if (window.kakao && window.kakao.maps) {
       window.kakao.maps.load(callback);
     } else {
-      onError?.();
+      onError?.("Kakao Maps SDK loaded, but window.kakao.maps is unavailable.");
     }
   };
-  script.onerror = () => onError?.();
+  script.onerror = () => onError?.("Failed to load Kakao Maps SDK script. Check the JavaScript key and Web platform domain.");
   document.head.appendChild(script);
 };
 
@@ -55,6 +55,7 @@ const Map = ({ jobList = [], location = {} }) => {
   const navigate = useNavigate();
   const [map, setMap] = useState(null);
   const [mapFailed, setMapFailed] = useState(false);
+  const [mapErrorMessage, setMapErrorMessage] = useState("");
   const [markers, setMarkers] = useState([]);
   const [samePositionJobs, setSamePositionJobs] = useState([]);
   const hasMapKey = Boolean(process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY);
@@ -89,6 +90,7 @@ const Map = ({ jobList = [], location = {} }) => {
       () => {
         const mapContainer = document.getElementById("map");
         if (!mapContainer) {
+          setMapErrorMessage("Map container was not found.");
           setMapFailed(true);
           return;
         }
@@ -100,7 +102,10 @@ const Map = ({ jobList = [], location = {} }) => {
 
         setMap(new kakao.maps.Map(mapContainer, mapOption));
       },
-      () => setMapFailed(true)
+      (message) => {
+        setMapErrorMessage(message);
+        setMapFailed(true);
+      }
     );
   }, [hasMapKey, mapFailed, location.lat, location.lon]);
 
@@ -231,7 +236,7 @@ const Map = ({ jobList = [], location = {} }) => {
     return (
       <div className={styles.mapFallback}>
         <strong>Map is unavailable.</strong>
-        <span>Please check the Kakao JavaScript key and allowed site domain.</span>
+        <span>{mapErrorMessage || "Please check the Kakao JavaScript key and allowed site domain."}</span>
       </div>
     );
   }
