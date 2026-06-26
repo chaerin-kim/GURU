@@ -58,7 +58,6 @@ const Map = ({ jobList = [], location = {} }) => {
   const [markers, setMarkers] = useState([]);
   const [samePositionJobs, setSamePositionJobs] = useState([]);
   const hasMapKey = Boolean(process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY);
-  const shouldShowMockMap = isMockMode || !hasMapKey || mapFailed;
 
   const findSamePositionJobs = useCallback((jobs) => {
     const samePositions = [];
@@ -84,7 +83,7 @@ const Map = ({ jobList = [], location = {} }) => {
   }, [jobList, findSamePositionJobs]);
 
   useEffect(() => {
-    if (shouldShowMockMap) return;
+    if (!hasMapKey || mapFailed) return;
 
     loadKakaoMapScript(
       () => {
@@ -103,7 +102,7 @@ const Map = ({ jobList = [], location = {} }) => {
       },
       () => setMapFailed(true)
     );
-  }, [shouldShowMockMap, location.lat, location.lon]);
+  }, [hasMapKey, mapFailed, location.lat, location.lon]);
 
   useEffect(() => {
     if (map) {
@@ -228,27 +227,11 @@ const Map = ({ jobList = [], location = {} }) => {
     }
   }, [map, jobList, createMarker, markers.length]);
 
-  if (shouldShowMockMap) {
-    const displayJobs = jobList.filter(Boolean);
-    const validJobs = displayJobs.filter((job) => job.location?.mapX && job.location?.mapY);
-    const firstJob = validJobs[0];
-    const centerLat = Number(firstJob?.location?.mapY || location.lat || 37.529325);
-    const centerLon = Number(firstJob?.location?.mapX || location.lon || 126.965706);
-    const lonValues = validJobs.map((job) => Number(job.location.mapX));
-    const latValues = validJobs.map((job) => Number(job.location.mapY));
-    const minLon = Math.min(...lonValues, centerLon) - 0.02;
-    const maxLon = Math.max(...lonValues, centerLon) + 0.02;
-    const minLat = Math.min(...latValues, centerLat) - 0.015;
-    const maxLat = Math.max(...latValues, centerLat) + 0.015;
-    const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${minLon}%2C${minLat}%2C${maxLon}%2C${maxLat}&layer=mapnik&marker=${centerLat}%2C${centerLon}`;
-
+  if (!hasMapKey || mapFailed) {
     return (
-      <div className={styles.mockMap} aria-label="Job location map">
-        <iframe className={styles.osmFrame} title="Job location map" src={mapSrc} loading="lazy"></iframe>
-        <div className={styles.mapSummary}>
-          <strong>{displayJobs.length}</strong>
-          <span>offline jobs</span>
-        </div>
+      <div className={styles.mapFallback}>
+        <strong>Map is unavailable.</strong>
+        <span>Please check the Kakao JavaScript key and allowed site domain.</span>
       </div>
     );
   }
