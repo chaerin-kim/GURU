@@ -11,6 +11,7 @@ import DaumPostcode from "react-daum-postcode";
 import Lnb from "../components/Lnb";
 import Modal from "../components/Modal";
 import ModalAlert from "../components/ModalAlert";
+import { geocodeAddress, getDefaultCoords } from "../utils/kakaoMap";
 import "react-datepicker/dist/react-datepicker.css";
 import style from "../css/Form.module.css";
 
@@ -99,6 +100,23 @@ const JobWrit = () => {
     setValue("zonecode", zonecode);
     setValue("address", address);
     if (address) {
+      if (isMockMode || !window.kakao?.maps?.services) {
+        const setFallbackCoords = async () => {
+          try {
+            const coords = isMockMode ? getDefaultCoords() : await geocodeAddress(address);
+            setMapX(coords.mapX);
+            setMapY(coords.mapY);
+          } catch (error) {
+            const coords = getDefaultCoords();
+            console.warn("Failed to geocode address. Falling back to default coordinates.", error);
+            setMapX(coords.mapX);
+            setMapY(coords.mapY);
+          }
+        };
+        setFallbackCoords();
+        return;
+      }
+
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(address, (result, status) => {
         if (status === window.kakao.maps.services.Status.OK) {

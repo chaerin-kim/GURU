@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { setPageInfo } from "../store/pageInfo";
 import { useForm, Controller } from "react-hook-form";
-import { url } from "../store/ref";
+import { isMockMode, url } from "../store/ref";
 import DatePicker from "react-datepicker";
 import { enUS, ko } from "date-fns/locale";
 import Select from "react-select";
@@ -12,6 +12,7 @@ import DaumPostcode from "react-daum-postcode";
 import Lnb from "../components/Lnb";
 import Modal from "../components/Modal";
 import ModalAlert from "../components/ModalAlert";
+import { geocodeAddress, getDefaultCoords } from "../utils/kakaoMap";
 import "react-datepicker/dist/react-datepicker.css";
 import style from "../css/Form.module.css";
 
@@ -157,6 +158,23 @@ const JobEdit = () => {
     setValue("zonecode", zonecode);
     setValue("address", address);
     if (address) {
+      if (isMockMode || !window.kakao?.maps?.services) {
+        const setFallbackCoords = async () => {
+          try {
+            const coords = isMockMode ? getDefaultCoords() : await geocodeAddress(address);
+            setMapX(coords.mapX);
+            setMapY(coords.mapY);
+          } catch (error) {
+            const coords = getDefaultCoords();
+            console.warn("Failed to geocode address. Falling back to default coordinates.", error);
+            setMapX(coords.mapX);
+            setMapY(coords.mapY);
+          }
+        };
+        setFallbackCoords();
+        return;
+      }
+
       const geocoder = new window.kakao.maps.services.Geocoder();
       geocoder.addressSearch(address, (result, status) => {
         if (status === window.kakao.maps.services.Status.OK) {
