@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { setDates } from "../store/findjob";
 import { isMockMode, url } from "../store/ref";
 import { getMockUser } from "../mock/jobs";
+import { getProfileImageSrc } from "../utils/imageSrc";
 import style from "../css/Main.module.css";
 
 const MainJobItem = ({ item, tpye }) => {
@@ -97,7 +98,7 @@ const MainJobItem = ({ item, tpye }) => {
           <span>{t("common.currency")}</span>
         </div>
         <div className={style.thumb}>
-          {!author?.image ? <img src={`${process.env.PUBLIC_URL}/img/common/no_img.jpg`} alt={t("common.imageMissing")} /> : <img src={`${url}/${author?.image}`} alt={t("common.profileImage")} />}
+          <img src={getProfileImageSrc(author?.image)} alt={author?.image ? t("common.profileImage") : t("common.imageMissing")} />
         </div>
       </div>
     </div>

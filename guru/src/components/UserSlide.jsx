@@ -4,6 +4,7 @@ import Modal from "../components/Modal";
 import UserProfile from "./UserProfile";
 import { isMockMode, url } from "../store/ref";
 import { getMockUsers } from "../mock/jobs";
+import { getProfileImageSrc } from "../utils/imageSrc";
 import ProgressBar from "./ProgressBar";
 
 const UserSlide = ({ item }) => {
@@ -101,7 +102,7 @@ const UserSlide = ({ item }) => {
           <SwiperSlide key={user?._id}>
             <div className="userCard" onClick={() => userProfile(user)}>
               <div className="thumb">
-                {!user?.image ? <img src={`${process.env.PUBLIC_URL}/img/common/no_img.jpg`} alt="이미지 없음" /> : <img src={`${url}/${user?.image}`} alt="프로필 이미지" />}
+                <img src={getProfileImageSrc(user?.image)} alt={user?.image ? "프로필 이미지" : "이미지 없음"} />
               </div>
               <div className="userInfo">
                 <strong>

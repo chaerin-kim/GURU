@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { userState } from "../store/userStore";
 import { isMockMode, url } from "../store/ref";
 import { useAuth } from "../assets/AuthContext";
+import { getProfileImageSrc } from "../utils/imageSrc";
 import Modal from "../components/Modal";
 import ModalAlert from "../components/ModalAlert";
 import Profile from "../components/Profile";
@@ -39,9 +40,10 @@ const Header = () => {
           dispatch(
             userState({
               emailID: "mock@guru.local",
-              userName: "임시사용자",
-              nickName: "Mock User",
+              userName: "Kim Seo-yoon",
+              nickName: "Seo-yoon",
               certified: true,
+              image: "img/mock/seo-yoon.jpg",
               auth: "user",
             })
           );
@@ -195,7 +197,7 @@ const Header = () => {
         {isAuthenticated ? (
           <div className={style.loginDiv}>
             <div className={style.thumb} onClick={mypageClick}>
-              {!user?.image ? <img src={`${process.env.PUBLIC_URL}/img/common/no_img.jpg`} alt={t("common.imageMissing")} /> : <img src={`${url}/${user?.image}`} alt={t("common.profileImage")} />}
+              <img src={getProfileImageSrc(user?.image)} alt={user?.image ? t("common.profileImage") : t("common.imageMissing")} />
             </div>
           </div>
         ) : (
@@ -216,7 +218,7 @@ const Header = () => {
             <span>{t("menu.currentAccount")}</span>
             <div className={style.myprofile}>
               <div className={style.profileThumb}>
-                {!user?.image ? <img src={`${process.env.PUBLIC_URL}/img/common/no_img.jpg`} alt={t("common.imageMissing")} /> : <img src={`${url}/${user?.image}`} alt={t("common.profileImage")} />}
+                <img src={getProfileImageSrc(user?.image)} alt={user?.image ? t("common.profileImage") : t("common.imageMissing")} />
               </div>
               <div>
                 <h2>{nickName ? nickName : t("menu.noNickname")}</h2>

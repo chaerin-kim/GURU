@@ -5,6 +5,7 @@ import { setDates } from '../store/findjob';
 import { updateItemStatus } from '../store/updateItemStatus';
 import { isMockMode, url } from '../store/ref';
 import { getMockUser, mockJobs } from '../mock/jobs';
+import { getProfileImageSrc } from '../utils/imageSrc';
 import Modal from '../components/Modal';
 import ModalAlert from '../components/ModalAlert';
 import SatisfactionModal from './SatisfactionModal';
@@ -300,14 +301,7 @@ const Detail = ({ _id, closeDetail }) => {
       >
         <div className="mw">
           <div className={style.thumb}>
-            {!author?.image ? (
-              <img
-                src={`${process.env.PUBLIC_URL}/img/common/no_img.jpg`}
-                alt="이미지 없음"
-              />
-            ) : (
-              <img src={`${url}/${author?.image}`} alt="프로필 이미지" />
-            )}
+            <img src={getProfileImageSrc(author?.image)} alt={author?.image ? '프로필 이미지' : '이미지 없음'} />
           </div>
           <div className={style.titleWrap}>
             <div className={style.cateWrap}>

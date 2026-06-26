@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { setDates } from "../store/findjob";
 import { isMockMode, url } from "../store/ref";
 import { getMockUser } from "../mock/jobs";
+import { getProfileImageSrc } from "../utils/imageSrc";
 import Modal from "../components/Modal";
 import ModalAlert from "../components/ModalAlert";
 import Detail from "./Detail";
@@ -168,7 +169,7 @@ const JobItem = ({ item, jobOffer, findjob }) => {
         <div className={style.jobInfo}>
           {!jobOffer ? (
             <div className={style.thumb}>
-              {!author?.image ? <img src={`${process.env.PUBLIC_URL}/img/common/no_img.jpg`} alt="이미지 없음" /> : <img src={`${url}/${author?.image}`} alt="프로필 이미지" />}
+              <img src={getProfileImageSrc(author?.image)} alt={author?.image ? "프로필 이미지" : "이미지 없음"} />
             </div>
           ) : null}
           <div className={style.jobDes}>

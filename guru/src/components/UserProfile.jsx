@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updateItemStatus } from "../store/updateItemStatus";
 import { url } from "../store/ref";
+import { getProfileImageSrc } from "../utils/imageSrc";
 import Modal from "./Modal";
 import ModalAlert from "./ModalAlert";
 import SatisfactionModal from "./SatisfactionModal";
@@ -186,7 +187,7 @@ const UserProfile = ({ show, onClose, user, item }) => {
     <div className={style.userProfile}>
       <div className={style.userCard}>
         <div className={style.thumb}>
-          {!user?.image ? <img src={`${process.env.PUBLIC_URL}/img/common/no_img.jpg`} alt="이미지 없음" /> : <img src={`${url}/${user?.image}`} alt="프로필 이미지" />}
+          <img src={getProfileImageSrc(user?.image)} alt={user?.image ? "프로필 이미지" : "이미지 없음"} />
         </div>
         <div className={style.userInfo}>
           <div>
