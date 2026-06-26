@@ -424,6 +424,7 @@ const JobEdit = () => {
                     render={({ field }) => (
                       <Select
                         {...field}
+                        value={workStartTime}
                         options={workStartTimeOp}
                         className={style.select}
                         styles={customStyles}
@@ -431,6 +432,10 @@ const JobEdit = () => {
                         onChange={(selectedOption) => {
                           setWorkStartTime(selectedOption);
                           field.onChange(selectedOption);
+                          if (workEndTime && selectedOption && workEndTime.value <= selectedOption.value) {
+                            setWorkEndTime(null);
+                            setValue("workEndTime", null);
+                          }
                         }}
                       />
                     )}
@@ -443,6 +448,7 @@ const JobEdit = () => {
                     render={({ field }) => (
                       <Select
                         {...field}
+                        value={workEndTime}
                         options={filteredEndTimeOp}
                         className={style.select}
                         styles={customStyles}
