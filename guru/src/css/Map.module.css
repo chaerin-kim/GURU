@@ -141,16 +141,14 @@
 
 .zoomControls {
   position: absolute;
-  left: 1rem;
-  bottom: 1rem;
+  right: 1.2rem;
+  bottom: 1.2rem;
   z-index: 2;
   display: flex;
   flex-direction: column;
+  gap: 0.8rem;
   overflow: hidden;
-  border: 1px solid var(--cr-bl1);
-  border-radius: 0.3rem;
-  background: var(--cr-w);
-  box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.16);
+  background: transparent;
 }
 
 .zoomControls button {
@@ -164,7 +162,8 @@
   justify-content: center;
   color: var(--cr-bl1);
   background: var(--cr-w);
-  font-size: 13px;
+  border: 1px solid var(--cr-red);
+  font-size: 12px;
   font-weight: 900;
   line-height: 16px;
   cursor: pointer;
@@ -172,7 +171,7 @@
 }
 
 .zoomControls button + button {
-  border-top: 1px solid var(--cr-bl1);
+  border-top: 1px solid var(--cr-red);
 }
 
 .zoomControls button:hover {
