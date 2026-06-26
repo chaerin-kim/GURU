@@ -61,6 +61,7 @@ const Map = ({ jobList = [], location = {} }) => {
   const [mapErrorMessage, setMapErrorMessage] = useState("");
   const [markers, setMarkers] = useState([]);
   const [samePositionJobs, setSamePositionJobs] = useState([]);
+  const mapShellRef = useRef(null);
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const lastCenteredLocationRef = useRef(null);
@@ -138,8 +139,8 @@ const Map = ({ jobList = [], location = {} }) => {
   }, [location.lat, location.lon, map]);
 
   useEffect(() => {
-    const mapContainer = mapContainerRef.current;
-    if (!map || !mapContainer) return;
+    const mapShell = mapShellRef.current;
+    if (!map || !mapShell) return;
 
     let isDragging = false;
     let lastPoint = null;
@@ -150,16 +151,30 @@ const Map = ({ jobList = [], location = {} }) => {
 
     const moveMapByPixels = (dx, dy) => {
       const projection = map.getProjection();
-      const centerPoint = projection.containerPointFromCoords(map.getCenter());
-      const nextPoint = new kakao.maps.Point(centerPoint.x - dx, centerPoint.y - dy);
-      map.setCenter(projection.coordsFromContainerPoint(nextPoint));
+      if (projection?.containerPointFromCoords && projection?.coordsFromContainerPoint) {
+        const centerPoint = projection.containerPointFromCoords(map.getCenter());
+        const nextPoint = new kakao.maps.Point(centerPoint.x - dx, centerPoint.y - dy);
+        map.setCenter(projection.coordsFromContainerPoint(nextPoint));
+        return;
+      }
+
+      map.panBy?.(-dx, -dy);
+    };
+
+    const isMapControl = (event) => event.target instanceof Element && event.target.closest('[data-map-control="true"]');
+
+    const preventMapGesture = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
     };
 
     const handlePointerDown = (event) => {
+      if (isMapControl(event)) return;
       if (event.button !== 0) return;
+      preventMapGesture(event);
       isDragging = true;
       lastPoint = { x: event.clientX, y: event.clientY };
-      mapContainer.setPointerCapture?.(event.pointerId);
+      mapShell.setPointerCapture?.(event.pointerId);
     };
 
     const handlePointerMove = (event) => {
@@ -169,7 +184,7 @@ const Map = ({ jobList = [], location = {} }) => {
       const dy = event.clientY - lastPoint.y;
       if (dx === 0 && dy === 0) return;
 
-      event.preventDefault();
+      preventMapGesture(event);
       moveMapByPixels(dx, dy);
       lastPoint = { x: event.clientX, y: event.clientY };
     };
@@ -177,11 +192,12 @@ const Map = ({ jobList = [], location = {} }) => {
     const stopDragging = (event) => {
       isDragging = false;
       lastPoint = null;
-      mapContainer.releasePointerCapture?.(event.pointerId);
+      mapShell.releasePointerCapture?.(event.pointerId);
     };
 
     const handleWheel = (event) => {
-      event.preventDefault();
+      if (isMapControl(event)) return;
+      preventMapGesture(event);
 
       wheelDelta += event.deltaY;
       const now = Date.now();
@@ -193,20 +209,20 @@ const Map = ({ jobList = [], location = {} }) => {
       lastZoomAt = now;
     };
 
-    mapContainer.addEventListener("pointerdown", handlePointerDown);
-    mapContainer.addEventListener("pointermove", handlePointerMove);
-    mapContainer.addEventListener("pointerup", stopDragging);
-    mapContainer.addEventListener("pointercancel", stopDragging);
-    mapContainer.addEventListener("mouseleave", stopDragging);
-    mapContainer.addEventListener("wheel", handleWheel, { passive: false });
+    mapShell.addEventListener("pointerdown", handlePointerDown, true);
+    mapShell.addEventListener("pointermove", handlePointerMove, true);
+    mapShell.addEventListener("pointerup", stopDragging, true);
+    mapShell.addEventListener("pointercancel", stopDragging, true);
+    mapShell.addEventListener("mouseleave", stopDragging, true);
+    mapShell.addEventListener("wheel", handleWheel, { passive: false, capture: true });
 
     return () => {
-      mapContainer.removeEventListener("pointerdown", handlePointerDown);
-      mapContainer.removeEventListener("pointermove", handlePointerMove);
-      mapContainer.removeEventListener("pointerup", stopDragging);
-      mapContainer.removeEventListener("pointercancel", stopDragging);
-      mapContainer.removeEventListener("mouseleave", stopDragging);
-      mapContainer.removeEventListener("wheel", handleWheel);
+      mapShell.removeEventListener("pointerdown", handlePointerDown, true);
+      mapShell.removeEventListener("pointermove", handlePointerMove, true);
+      mapShell.removeEventListener("pointerup", stopDragging, true);
+      mapShell.removeEventListener("pointercancel", stopDragging, true);
+      mapShell.removeEventListener("mouseleave", stopDragging, true);
+      mapShell.removeEventListener("wheel", handleWheel, true);
     };
   }, [map]);
 
@@ -347,10 +363,10 @@ const Map = ({ jobList = [], location = {} }) => {
   }
 
   return (
-    <div className={styles.mapShell}>
+    <div ref={mapShellRef} className={styles.mapShell}>
       <div ref={mapContainerRef} className={styles.map}></div>
       {map && (
-        <div className={styles.zoomControls} aria-label="Map zoom controls">
+        <div className={styles.zoomControls} data-map-control="true" aria-label="Map zoom controls">
           <button type="button" aria-label="Zoom in" title="Zoom in" onClick={(event) => handleZoomButtonClick(event, -1)}>
             +
           </button>
