@@ -145,8 +145,8 @@ const Map = ({ jobList = [], location = {} }) => {
     let lastPoint = null;
     let wheelDelta = 0;
     let lastZoomAt = 0;
-    const zoomThreshold = 520;
-    const zoomInterval = 420;
+    const zoomThreshold = 900;
+    const zoomInterval = 650;
 
     const moveMapByPixels = (dx, dy) => {
       const projection = map.getProjection();

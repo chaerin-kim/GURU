@@ -141,34 +141,38 @@
 
 .zoomControls {
   position: absolute;
-  top: 1.2rem;
-  right: 1.2rem;
+  left: 1rem;
+  bottom: 1rem;
   z-index: 2;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 2px solid var(--cr-bl1);
-  border-radius: 0.6rem;
+  border: 1px solid var(--cr-bl1);
+  border-radius: 0.3rem;
   background: var(--cr-w);
-  box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.16);
+  box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.16);
 }
 
 .zoomControls button {
-  width: 4rem;
-  height: 3.8rem;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--cr-bl1);
   background: var(--cr-w);
-  font-size: 2.6rem;
+  font-size: 13px;
   font-weight: 900;
-  line-height: 1;
+  line-height: 16px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .zoomControls button + button {
-  border-top: 2px solid var(--cr-bl1);
+  border-top: 1px solid var(--cr-bl1);
 }
 
 .zoomControls button:hover {
