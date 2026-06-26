@@ -7,7 +7,7 @@ export const loadKakaoMaps = () =>
       return;
     }
 
-    const appKey = process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY;
+    const appKey = process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY?.trim();
     if (!appKey) {
       reject(new Error("Missing Kakao JavaScript key"));
       return;
@@ -27,7 +27,7 @@ export const loadKakaoMaps = () =>
     }
 
     const script = document.createElement("script");
-    const mapUrl = process.env.REACT_APP_MAP_URL || "//dapi.kakao.com/v2/maps/sdk.js?";
+    const mapUrl = process.env.REACT_APP_MAP_URL || "https://dapi.kakao.com/v2/maps/sdk.js?";
     script.src = `${mapUrl}appkey=${appKey}&libraries=services,clusterer&autoload=false`;
     script.async = true;
     script.dataset.kakaoMap = "true";
