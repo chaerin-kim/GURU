@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { isMockMode, url } from "../store/ref";
 import { getMockUser } from "../mock/jobs";
+import { getProfileImageSrc } from "../utils/imageSrc";
 import styles from "../css/Map.module.css";
 
 const loadKakaoMapScript = (callback, onError) => {
@@ -142,6 +143,10 @@ const Map = ({ jobList = [], location = {} }) => {
 
     let isDragging = false;
     let lastPoint = null;
+    let wheelDelta = 0;
+    let lastZoomAt = 0;
+    const zoomThreshold = 260;
+    const zoomInterval = 220;
 
     const moveMapByPixels = (dx, dy) => {
       const projection = map.getProjection();
@@ -177,8 +182,15 @@ const Map = ({ jobList = [], location = {} }) => {
 
     const handleWheel = (event) => {
       event.preventDefault();
-      const nextLevel = clampMapLevel(map.getLevel() + (event.deltaY > 0 ? 1 : -1));
+
+      wheelDelta += event.deltaY;
+      const now = Date.now();
+      if (Math.abs(wheelDelta) < zoomThreshold || now - lastZoomAt < zoomInterval) return;
+
+      const nextLevel = clampMapLevel(map.getLevel() + (wheelDelta > 0 ? 1 : -1));
       map.setLevel(nextLevel);
+      wheelDelta = 0;
+      lastZoomAt = now;
     };
 
     mapContainer.addEventListener("pointerdown", handlePointerDown);
@@ -247,7 +259,7 @@ const Map = ({ jobList = [], location = {} }) => {
       const userData = await fetchUser(job.emailID);
       if (!userData) return null;
 
-      const imgSrc = userData.image ? `${url}/${userData.image}` : `${process.env.PUBLIC_URL}/img/common/no_img.jpg`;
+      const imgSrc = getProfileImageSrc(userData.image);
       const marker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(job.location.mapY, job.location.mapX),
       });
