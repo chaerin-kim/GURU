@@ -100,8 +100,7 @@
   width: 100%;
   height: 40rem;
 }
-.mapApiArea > div,
-.mapApiArea > div > div {
+.mapApiArea > div {
   width: 100%;
   height: 100%;
 }

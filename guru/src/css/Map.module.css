@@ -143,6 +143,9 @@
   position: absolute;
   right: 1.2rem;
   bottom: 1.2rem;
+  width: auto;
+  height: auto;
+  min-height: 0;
   z-index: 2;
   display: flex;
   flex-direction: column;
