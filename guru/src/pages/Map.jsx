@@ -114,6 +114,7 @@ const Map = ({ jobList = [], location = {} }) => {
         kakaoMap.setZoomable(true);
         kakaoMap.setKeyboardShortcuts(true);
         mapRef.current = kakaoMap;
+        window.__guruKakaoMap = kakaoMap;
         lastCenteredLocationRef.current = `${location.lat},${location.lon}`;
         setMap(kakaoMap);
 
@@ -141,11 +142,6 @@ const Map = ({ jobList = [], location = {} }) => {
   const panMapByPixels = useCallback((dx, dy) => {
     const currentMap = mapRef.current;
     if (!currentMap) return;
-
-    if (typeof currentMap.panBy === "function") {
-      currentMap.panBy(-dx, -dy);
-      return;
-    }
 
     const projection = currentMap.getProjection?.();
     if (!projection || !window.kakao?.maps?.Point) return;
