@@ -1,5 +1,5 @@
 /* global kakao */
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { isMockMode, url } from "../store/ref";
 import { getMockUser } from "../mock/jobs";
@@ -58,6 +58,8 @@ const Map = ({ jobList = [], location = {} }) => {
   const [mapErrorMessage, setMapErrorMessage] = useState("");
   const [markers, setMarkers] = useState([]);
   const [samePositionJobs, setSamePositionJobs] = useState([]);
+  const mapRef = useRef(null);
+  const lastCenteredLocationRef = useRef(null);
   const hasMapKey = Boolean(process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY);
 
   const findSamePositionJobs = useCallback((jobs) => {
@@ -84,7 +86,7 @@ const Map = ({ jobList = [], location = {} }) => {
   }, [jobList, findSamePositionJobs]);
 
   useEffect(() => {
-    if (!hasMapKey || mapFailed) return;
+    if (!hasMapKey || mapFailed || mapRef.current) return;
 
     loadKakaoMapScript(
       () => {
@@ -98,9 +100,17 @@ const Map = ({ jobList = [], location = {} }) => {
         const mapOption = {
           center: new kakao.maps.LatLng(location.lat, location.lon),
           level: 3,
+          draggable: true,
+          scrollwheel: true,
         };
 
-        setMap(new kakao.maps.Map(mapContainer, mapOption));
+        const kakaoMap = new kakao.maps.Map(mapContainer, mapOption);
+        kakaoMap.setDraggable(true);
+        kakaoMap.setZoomable(true);
+        kakaoMap.setKeyboardShortcuts(true);
+        mapRef.current = kakaoMap;
+        lastCenteredLocationRef.current = `${location.lat},${location.lon}`;
+        setMap(kakaoMap);
       },
       (message) => {
         setMapErrorMessage(message);
@@ -110,11 +120,13 @@ const Map = ({ jobList = [], location = {} }) => {
   }, [hasMapKey, mapFailed, location.lat, location.lon]);
 
   useEffect(() => {
-    if (map) {
+    const nextLocationKey = `${location.lat},${location.lon}`;
+    if (map && lastCenteredLocationRef.current !== nextLocationKey) {
       const moveLatLon = new kakao.maps.LatLng(location.lat, location.lon);
       map.setCenter(moveLatLon);
+      lastCenteredLocationRef.current = nextLocationKey;
     }
-  }, [location, map]);
+  }, [location.lat, location.lon, map]);
 
   const fetchUser = async (emailID) => {
     if (isMockMode) {
