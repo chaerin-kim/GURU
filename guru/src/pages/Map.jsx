@@ -160,13 +160,17 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
     [navigate]
   );
 
-  const stopOverlayWheel = useCallback((root) => {
-    root.addEventListener(
+  const stopGroupListWheel = useCallback((root) => {
+    const list = root.querySelector(`.${styles.positionJob}`);
+    if (!list) return;
+
+    list.addEventListener(
       "wheel",
       (event) => {
         event.stopPropagation();
+        event.stopImmediatePropagation?.();
       },
-      { passive: true }
+      { passive: true, capture: true }
     );
   }, []);
 
@@ -199,11 +203,10 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
         event.preventDefault();
         goDetail(event.currentTarget.dataset.id);
       });
-      stopOverlayWheel(root);
 
       return root;
     },
-    [closeAllOverlays, goDetail, stopOverlayWheel]
+    [closeAllOverlays, goDetail]
   );
 
   const createJobGroupContent = useCallback(
@@ -240,11 +243,11 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
           goDetail(event.currentTarget.dataset.id);
         });
       });
-      stopOverlayWheel(root);
+      stopGroupListWheel(root);
 
       return root;
     },
-    [closeAllOverlays, goDetail, stopOverlayWheel]
+    [closeAllOverlays, goDetail, stopGroupListWheel]
   );
 
   const changeMapLevel = (direction) => {
@@ -274,11 +277,11 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
           center: new kakao.maps.LatLng(centerLocation.lat, centerLocation.lon),
           level: 3,
           draggable: true,
-          scrollwheel: false,
+          scrollwheel: true,
         });
 
         kakaoMap.setDraggable(true);
-        kakaoMap.setZoomable(false);
+        kakaoMap.setZoomable(true);
         kakaoMap.setKeyboardShortcuts(true);
         mapRef.current = kakaoMap;
         lastCenteredLocationRef.current = `${centerLocation.lat},${centerLocation.lon}`;
