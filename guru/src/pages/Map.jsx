@@ -160,6 +160,16 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
     [navigate]
   );
 
+  const stopOverlayWheel = useCallback((root) => {
+    root.addEventListener(
+      "wheel",
+      (event) => {
+        event.stopPropagation();
+      },
+      { passive: true }
+    );
+  }, []);
+
   const createSingleJobContent = useCallback(
     (job, userData) => {
       const root = document.createElement("div");
@@ -189,10 +199,11 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
         event.preventDefault();
         goDetail(event.currentTarget.dataset.id);
       });
+      stopOverlayWheel(root);
 
       return root;
     },
-    [closeAllOverlays, goDetail]
+    [closeAllOverlays, goDetail, stopOverlayWheel]
   );
 
   const createJobGroupContent = useCallback(
@@ -229,10 +240,11 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
           goDetail(event.currentTarget.dataset.id);
         });
       });
+      stopOverlayWheel(root);
 
       return root;
     },
-    [closeAllOverlays, goDetail]
+    [closeAllOverlays, goDetail, stopOverlayWheel]
   );
 
   const changeMapLevel = (direction) => {
@@ -262,11 +274,11 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
           center: new kakao.maps.LatLng(centerLocation.lat, centerLocation.lon),
           level: 3,
           draggable: true,
-          scrollwheel: true,
+          scrollwheel: false,
         });
 
         kakaoMap.setDraggable(true);
-        kakaoMap.setZoomable(true);
+        kakaoMap.setZoomable(false);
         kakaoMap.setKeyboardShortcuts(true);
         mapRef.current = kakaoMap;
         lastCenteredLocationRef.current = `${centerLocation.lat},${centerLocation.lon}`;
