@@ -1,13 +1,15 @@
 /* global kakao */
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isMockMode, url } from "../store/ref";
 import { getMockUser } from "../mock/jobs";
 import { getProfileImageSrc } from "../utils/imageSrc";
 import styles from "../css/Map.module.css";
 
+const DEFAULT_LOCATION = { lat: 37.529325, lon: 126.965706 };
+
 const loadKakaoMapScript = (callback, onError) => {
-  if (window.kakao && window.kakao.maps) {
+  if (window.kakao?.maps) {
     window.kakao.maps.load(callback);
     return;
   }
@@ -21,7 +23,7 @@ const loadKakaoMapScript = (callback, onError) => {
   const existingScript = document.querySelector('script[data-kakao-map="true"]');
   if (existingScript) {
     existingScript.addEventListener("load", () => {
-      if (window.kakao && window.kakao.maps) {
+      if (window.kakao?.maps) {
         window.kakao.maps.load(callback);
       } else {
         onError?.("Kakao Maps SDK loaded, but window.kakao.maps is unavailable.");
@@ -37,7 +39,7 @@ const loadKakaoMapScript = (callback, onError) => {
   script.async = true;
   script.dataset.kakaoMap = "true";
   script.onload = () => {
-    if (window.kakao && window.kakao.maps) {
+    if (window.kakao?.maps) {
       window.kakao.maps.load(callback);
     } else {
       onError?.("Kakao Maps SDK loaded, but window.kakao.maps is unavailable.");
@@ -48,208 +50,79 @@ const loadKakaoMapScript = (callback, onError) => {
 };
 
 const formatDate = (dateString) => {
-  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-  return new Date(dateString).toLocaleDateString("ko-KR", options);
+  if (!dateString) return "-";
+
+  return new Date(dateString).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 };
 
 const clampMapLevel = (level) => Math.max(1, Math.min(14, level));
 
-const Map = ({ jobList = [], location = {} }) => {
+const getCoordinateKey = (job) => {
+  const lat = Number(job?.location?.mapY);
+  const lon = Number(job?.location?.mapX);
+
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+    return null;
+  }
+
+  return `${lat.toFixed(6)},${lon.toFixed(6)}`;
+};
+
+const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
   const navigate = useNavigate();
+  const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
+  const markerRefs = useRef([]);
+  const overlayRefs = useRef([]);
+  const clustererRef = useRef(null);
+  const lastCenteredLocationRef = useRef(null);
+
   const [map, setMap] = useState(null);
   const [mapFailed, setMapFailed] = useState(false);
   const [mapErrorMessage, setMapErrorMessage] = useState("");
-  const [markers, setMarkers] = useState([]);
-  const [samePositionJobs, setSamePositionJobs] = useState([]);
-  const mapContainerRef = useRef(null);
-  const gestureLayerRef = useRef(null);
-  const mapRef = useRef(null);
-  const lastCenteredLocationRef = useRef(null);
+
   const hasMapKey = Boolean(process.env.REACT_APP_MAP_JAVASCRIPT_APPKEY);
 
-  const findSamePositionJobs = useCallback((jobs) => {
-    const samePositions = [];
-    const checkedPositions = new Set();
+  const jobGroups = useMemo(() => {
+    const groups = new window.Map();
 
-    jobs.forEach((job, index) => {
-      const jobPos = `${job.location.mapX},${job.location.mapY}`;
-      if (checkedPositions.has(jobPos)) return;
+    jobList.forEach((job) => {
+      const key = getCoordinateKey(job);
+      if (!key) return;
 
-      const sameJobs = jobs.filter((otherJob, otherIndex) => index !== otherIndex && job.location.mapX === otherJob.location.mapX && job.location.mapY === otherJob.location.mapY);
-
-      if (sameJobs.length > 0) {
-        samePositions.push([job, ...sameJobs]);
-        checkedPositions.add(jobPos);
+      if (!groups.has(key)) {
+        groups.set(key, []);
       }
+      groups.get(key).push(job);
     });
 
-    return samePositions;
-  }, []);
+    return Array.from(groups.values());
+  }, [jobList]);
 
-  useEffect(() => {
-    setSamePositionJobs(findSamePositionJobs(jobList));
-  }, [jobList, findSamePositionJobs]);
+  const centerLocation = useMemo(() => {
+    const propLat = Number(location?.lat);
+    const propLon = Number(location?.lon);
 
-  useEffect(() => {
-    if (!hasMapKey || mapFailed || mapRef.current) return;
-
-    loadKakaoMapScript(
-      () => {
-        const mapContainer = mapContainerRef.current;
-        if (!mapContainer) {
-          setMapErrorMessage("Map container was not found.");
-          setMapFailed(true);
-          return;
-        }
-
-        const mapOption = {
-          center: new kakao.maps.LatLng(location.lat, location.lon),
-          level: 3,
-          draggable: true,
-          scrollwheel: true,
-        };
-
-        const kakaoMap = new kakao.maps.Map(mapContainer, mapOption);
-        kakaoMap.setDraggable(true);
-        kakaoMap.setZoomable(true);
-        kakaoMap.setKeyboardShortcuts(true);
-        mapRef.current = kakaoMap;
-        window.__guruKakaoMap = kakaoMap;
-        lastCenteredLocationRef.current = `${location.lat},${location.lon}`;
-        setMap(kakaoMap);
-
-        window.requestAnimationFrame(() => {
-          kakaoMap.relayout();
-          kakaoMap.setCenter(new kakao.maps.LatLng(location.lat, location.lon));
-        });
-      },
-      (message) => {
-        setMapErrorMessage(message);
-        setMapFailed(true);
-      }
-    );
-  }, [hasMapKey, mapFailed, location.lat, location.lon]);
-
-  useEffect(() => {
-    const nextLocationKey = `${location.lat},${location.lon}`;
-    if (map && lastCenteredLocationRef.current !== nextLocationKey) {
-      const moveLatLon = new kakao.maps.LatLng(location.lat, location.lon);
-      map.setCenter(moveLatLon);
-      lastCenteredLocationRef.current = nextLocationKey;
+    if (Number.isFinite(propLat) && Number.isFinite(propLon)) {
+      return { lat: propLat, lon: propLon };
     }
-  }, [location.lat, location.lon, map]);
 
-  const panMapByPixels = useCallback((dx, dy) => {
-    const currentMap = mapRef.current;
-    if (!currentMap) return;
-
-    const projection = currentMap.getProjection?.();
-    if (!projection || !window.kakao?.maps?.Point) return;
-
-    const center = currentMap.getCenter();
-    const centerPoint =
-      typeof projection.containerPointFromCoords === "function"
-        ? projection.containerPointFromCoords(center)
-        : typeof projection.pointFromCoords === "function"
-        ? projection.pointFromCoords(center)
-        : null;
-
-    if (!centerPoint) return;
-
-    const nextPoint = new kakao.maps.Point(centerPoint.x - dx, centerPoint.y - dy);
-    const nextCenter =
-      typeof projection.coordsFromContainerPoint === "function"
-        ? projection.coordsFromContainerPoint(nextPoint)
-        : typeof projection.coordsFromPoint === "function"
-        ? projection.coordsFromPoint(nextPoint)
-        : null;
-
-    if (nextCenter) {
-      currentMap.setCenter(nextCenter);
+    const firstJob = jobList.find((job) => getCoordinateKey(job));
+    if (firstJob) {
+      return {
+        lat: Number(firstJob.location.mapY),
+        lon: Number(firstJob.location.mapX),
+      };
     }
-  }, []);
 
-  useEffect(() => {
-    const layer = gestureLayerRef.current;
-    if (!map || !layer) return;
+    return DEFAULT_LOCATION;
+  }, [jobList, location?.lat, location?.lon]);
 
-    let isDragging = false;
-    let lastX = 0;
-    let lastY = 0;
-    let wheelDelta = 0;
-    let lastWheelZoomAt = 0;
-
-    const updateLevel = (direction) => {
-      const currentMap = mapRef.current;
-      if (!currentMap) return;
-      currentMap.setLevel(clampMapLevel(currentMap.getLevel() + direction));
-    };
-
-    const onPointerDown = (event) => {
-      if (event.button !== 0) return;
-      event.preventDefault();
-      event.stopPropagation();
-      isDragging = true;
-      lastX = event.clientX;
-      lastY = event.clientY;
-      layer.classList.add(styles.dragging);
-      layer.setPointerCapture?.(event.pointerId);
-    };
-
-    const onPointerMove = (event) => {
-      if (!isDragging) return;
-      event.preventDefault();
-      event.stopPropagation();
-
-      const dx = event.clientX - lastX;
-      const dy = event.clientY - lastY;
-      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
-
-      lastX = event.clientX;
-      lastY = event.clientY;
-      panMapByPixels(dx, dy);
-    };
-
-    const stopDragging = (event) => {
-      if (!isDragging) return;
-      event.preventDefault();
-      event.stopPropagation();
-      isDragging = false;
-      layer.classList.remove(styles.dragging);
-      layer.releasePointerCapture?.(event.pointerId);
-    };
-
-    const onWheel = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      wheelDelta += event.deltaY;
-      const now = Date.now();
-      if (Math.abs(wheelDelta) < 900 || now - lastWheelZoomAt < 450) return;
-
-      updateLevel(wheelDelta > 0 ? 1 : -1);
-      wheelDelta = 0;
-      lastWheelZoomAt = now;
-    };
-
-    layer.addEventListener("pointerdown", onPointerDown);
-    layer.addEventListener("pointermove", onPointerMove);
-    layer.addEventListener("pointerup", stopDragging);
-    layer.addEventListener("pointercancel", stopDragging);
-    layer.addEventListener("mouseleave", stopDragging);
-    layer.addEventListener("wheel", onWheel, { passive: false });
-
-    return () => {
-      layer.removeEventListener("pointerdown", onPointerDown);
-      layer.removeEventListener("pointermove", onPointerMove);
-      layer.removeEventListener("pointerup", stopDragging);
-      layer.removeEventListener("pointercancel", stopDragging);
-      layer.removeEventListener("mouseleave", stopDragging);
-      layer.removeEventListener("wheel", onWheel);
-    };
-  }, [map, panMapByPixels]);
-
-  const fetchUser = async (emailID) => {
+  const fetchUser = useCallback(async (emailID) => {
     if (isMockMode) {
       return getMockUser(emailID);
     }
@@ -264,7 +137,103 @@ const Map = ({ jobList = [], location = {} }) => {
       console.error("Failed to fetch data", error);
       return null;
     }
-  };
+  }, []);
+
+  const clearMapObjects = useCallback(() => {
+    overlayRefs.current.forEach((overlay) => overlay.setMap(null));
+    markerRefs.current.forEach((marker) => marker.setMap(null));
+    clustererRef.current?.clear?.();
+
+    overlayRefs.current = [];
+    markerRefs.current = [];
+    clustererRef.current = null;
+  }, []);
+
+  const closeAllOverlays = useCallback(() => {
+    overlayRefs.current.forEach((overlay) => overlay.setMap(null));
+  }, []);
+
+  const goDetail = useCallback(
+    (jobId) => {
+      navigate("/job-detail", { state: { _id: jobId } });
+    },
+    [navigate]
+  );
+
+  const createSingleJobContent = useCallback(
+    (job, userData) => {
+      const root = document.createElement("div");
+      root.className = styles.wrap;
+
+      root.innerHTML = `
+        <div class="${styles.info}">
+          <div class="${styles.title}">
+            <span>${job.title}</span>
+            <button type="button" class="${styles.close}" aria-label="닫기">×</button>
+          </div>
+          <div class="${styles.body}">
+            <div class="${styles.img}">
+              <img src="${getProfileImageSrc(userData?.image)}" alt="">
+            </div>
+            <div class="${styles.desc}">
+              <div class="${styles.ellipsis}">${job.location?.address || "주소 정보 없음"}</div>
+              <div class="${styles.jibun}">${formatDate(job.workStartDate)} ~ ${formatDate(job.workEndDate)}</div>
+              <button type="button" class="${styles.link}" data-id="${job._id}">일자리 보기 &gt;</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      root.querySelector(`.${styles.close}`)?.addEventListener("click", () => closeAllOverlays());
+      root.querySelector(`.${styles.link}`)?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goDetail(event.currentTarget.dataset.id);
+      });
+
+      return root;
+    },
+    [closeAllOverlays, goDetail]
+  );
+
+  const createJobGroupContent = useCallback(
+    (jobs) => {
+      const root = document.createElement("div");
+      root.className = styles.wrap;
+
+      root.innerHTML = `
+        <div class="${styles.info}">
+          <div class="${styles.title}">
+            <span>총 ${jobs.length}건의 일자리</span>
+            <button type="button" class="${styles.close}" aria-label="닫기">×</button>
+          </div>
+          <div class="${styles.body} ${styles.positionJob}">
+            ${jobs
+              .map(
+                (job) => `
+                  <div class="${styles.jobItem}">
+                    <div class="${styles.sametitle}">${job.title}</div>
+                    <div class="${styles.samejibun}">${formatDate(job.workStartDate)} ~ ${formatDate(job.workEndDate)}</div>
+                    <button type="button" class="${styles.link}" data-id="${job._id}">일자리 보기 &gt;</button>
+                  </div>
+                `
+              )
+              .join("")}
+          </div>
+        </div>
+      `;
+
+      root.querySelector(`.${styles.close}`)?.addEventListener("click", () => closeAllOverlays());
+      root.querySelectorAll(`.${styles.link}`).forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          goDetail(event.currentTarget.dataset.id);
+        });
+      });
+
+      return root;
+    },
+    [closeAllOverlays, goDetail]
+  );
 
   const changeMapLevel = (direction) => {
     if (!map) return;
@@ -277,104 +246,127 @@ const Map = ({ jobList = [], location = {} }) => {
     changeMapLevel(direction);
   };
 
-  const createOverlayContent = (job, imgSrc, workStartDate, workEndDate, isSamePositionJob, groupContent, groupIndex) => `
-    <div class="${styles.wrap}">
-      <div class="${styles.info}">
-        <div class="${styles.title}">
-          ${isSamePositionJob ? `${samePositionJobs[groupIndex].length} jobs` : job.title}
-          <i class="fa-solid fa-xmark ${styles.close}" title="Close"></i>
-        </div>
-        <div class="${styles.body} ${isSamePositionJob ? styles.positionJob : ""}">
-          ${
-            isSamePositionJob
-              ? groupContent
-              : `
-                <div class="${styles.img}">
-                  <img src="${imgSrc}" alt="">
-                </div>
-                <div class="${styles.desc}">
-                  <div class="${styles.ellipsis}">${job.location.address}</div>
-                  <div class="${styles.jibun}">${workStartDate} ~ ${workEndDate}</div>
-                  <div><a href="#" class="${styles.link}" data-id="${job._id}">Go to listing ></a></div>
-                </div>
-              `
-          }
-        </div>
-      </div>
-    </div>
-  `;
+  useEffect(() => {
+    if (!hasMapKey || mapFailed || mapRef.current) return;
 
-  const createMarker = useCallback(
-    async (job) => {
-      const userData = await fetchUser(job.emailID);
-      if (!userData) return null;
+    loadKakaoMapScript(
+      () => {
+        const mapContainer = mapContainerRef.current;
+        if (!mapContainer) {
+          setMapErrorMessage("Map container was not found.");
+          setMapFailed(true);
+          return;
+        }
 
-      const imgSrc = getProfileImageSrc(userData.image);
-      const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(job.location.mapY, job.location.mapX),
-      });
+        const kakaoMap = new kakao.maps.Map(mapContainer, {
+          center: new kakao.maps.LatLng(centerLocation.lat, centerLocation.lon),
+          level: 3,
+          draggable: true,
+          scrollwheel: true,
+        });
 
-      const workStartDate = formatDate(job.workStartDate);
-      const workEndDate = formatDate(job.workEndDate);
-      const isSamePositionJob = samePositionJobs.some((group) => group.some((grouplist) => grouplist._id === job._id));
-      const groupIndex = samePositionJobs.findIndex((group) => group.some((grouplist) => grouplist._id === job._id));
-      const groupContent =
-        groupIndex >= 0
-          ? samePositionJobs[groupIndex]
-              .map(
-                (grouplist) => `
-                  <div class="${styles.jobItem}">
-                    <div class="${styles.sametitle}">${grouplist.title}</div>
-                    <div class="${styles.samejibun}">${formatDate(grouplist.workStartDate)} ~ ${formatDate(grouplist.workEndDate)}</div>
-                    <div><a href="#" class="${styles.link}" data-id="${grouplist._id}">Go to listing ></a></div>
-                  </div>
-                `
-              )
-              .join("")
-          : "";
+        kakaoMap.setDraggable(true);
+        kakaoMap.setZoomable(true);
+        kakaoMap.setKeyboardShortcuts(true);
+        mapRef.current = kakaoMap;
+        lastCenteredLocationRef.current = `${centerLocation.lat},${centerLocation.lon}`;
+        setMap(kakaoMap);
 
-      const overlay = new kakao.maps.CustomOverlay({
-        content: createOverlayContent(job, imgSrc, workStartDate, workEndDate, isSamePositionJob, groupContent, groupIndex),
-        position: marker.getPosition(),
-      });
-
-      kakao.maps.event.addListener(marker, "click", () => {
-        overlay.setMap(map);
-      });
-
-      const content = overlay.a.querySelector(`.${styles.wrap}`);
-      content.querySelectorAll(`.${styles.close}`).forEach((closeBtn) => closeBtn.addEventListener("click", () => overlay.setMap(null)));
-      content.querySelectorAll(`.${styles.link}`).forEach((link) =>
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          const jobId = e.target.getAttribute("data-id");
-          navigate("/job-detail", { state: { _id: jobId } });
-        })
-      );
-
-      return marker;
-    },
-    [navigate, samePositionJobs, map]
-  );
+        window.requestAnimationFrame(() => {
+          kakaoMap.relayout();
+          kakaoMap.setCenter(new kakao.maps.LatLng(centerLocation.lat, centerLocation.lon));
+        });
+      },
+      (message) => {
+        setMapErrorMessage(message);
+        setMapFailed(true);
+      }
+    );
+  }, [centerLocation.lat, centerLocation.lon, hasMapKey, mapFailed]);
 
   useEffect(() => {
-    if (map && jobList.length > 0) {
-      const clusterer = new kakao.maps.MarkerClusterer({
-        map,
-        averageCenter: true,
-        minLevel: 2.6,
-      });
+    if (!map) return;
 
-      const createMarkers = async () => {
-        const newMarkers = await Promise.all(jobList.map(createMarker));
-        const filteredMarkers = newMarkers.filter((marker) => marker !== null);
-        setMarkers(filteredMarkers);
-        clusterer.addMarkers(filteredMarkers);
-      };
-
-      createMarkers();
+    const nextLocationKey = `${centerLocation.lat},${centerLocation.lon}`;
+    if (lastCenteredLocationRef.current !== nextLocationKey) {
+      map.setCenter(new kakao.maps.LatLng(centerLocation.lat, centerLocation.lon));
+      lastCenteredLocationRef.current = nextLocationKey;
     }
-  }, [map, jobList, createMarker, markers.length]);
+  }, [centerLocation.lat, centerLocation.lon, map]);
+
+  useEffect(() => {
+    if (!map) return undefined;
+
+    let canceled = false;
+    clearMapObjects();
+
+    const createMarkers = async () => {
+      if (jobGroups.length === 0) return;
+
+      const bounds = new kakao.maps.LatLngBounds();
+      const markers = [];
+      const overlays = [];
+
+      for (const jobs of jobGroups) {
+        const representativeJob = jobs[0];
+        const position = new kakao.maps.LatLng(Number(representativeJob.location.mapY), Number(representativeJob.location.mapX));
+        const marker = new kakao.maps.Marker({ position });
+        const content =
+          jobs.length > 1
+            ? createJobGroupContent(jobs)
+            : createSingleJobContent(representativeJob, await fetchUser(representativeJob.emailID));
+
+        const overlay = new kakao.maps.CustomOverlay({
+          content,
+          position,
+          yAnchor: 1.15,
+          zIndex: 20,
+        });
+
+        kakao.maps.event.addListener(marker, "click", () => {
+          closeAllOverlays();
+          overlay.setMap(map);
+        });
+
+        markers.push(marker);
+        overlays.push(overlay);
+        bounds.extend(position);
+      }
+
+      if (canceled) {
+        overlays.forEach((overlay) => overlay.setMap(null));
+        markers.forEach((marker) => marker.setMap(null));
+        return;
+      }
+
+      markerRefs.current = markers;
+      overlayRefs.current = overlays;
+
+      if (kakao.maps.MarkerClusterer) {
+        clustererRef.current = new kakao.maps.MarkerClusterer({
+          map,
+          averageCenter: true,
+          minLevel: 6,
+        });
+        clustererRef.current.addMarkers(markers);
+      } else {
+        markers.forEach((marker) => marker.setMap(map));
+      }
+
+      if (markers.length === 1) {
+        map.setCenter(markers[0].getPosition());
+      } else {
+        map.setBounds(bounds);
+      }
+    };
+
+    createMarkers();
+
+    return () => {
+      canceled = true;
+      clearMapObjects();
+    };
+  }, [clearMapObjects, closeAllOverlays, createJobGroupContent, createSingleJobContent, fetchUser, jobGroups, map]);
 
   if (!hasMapKey || mapFailed) {
     return (
@@ -388,7 +380,6 @@ const Map = ({ jobList = [], location = {} }) => {
   return (
     <div className={styles.mapShell}>
       <div ref={mapContainerRef} className={styles.map}></div>
-      {map && <div ref={gestureLayerRef} className={styles.gestureLayer} aria-hidden="true"></div>}
       {map && (
         <div className={styles.zoomControls} aria-label="Map zoom controls">
           <button type="button" aria-label="Zoom in" title="Zoom in" onClick={(event) => handleZoomButtonClick(event, -1)}>

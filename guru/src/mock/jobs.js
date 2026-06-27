@@ -177,6 +177,26 @@ export const mockJobs = [
     workStartDate: "2026-07-05T16:00:00.000Z",
     workEndDate: "2026-07-05T17:00:00.000Z",
   },
+  {
+    _id: "mock-job-007",
+    emailID: "designer@guru.local",
+    nickName: "Da-in",
+    title: "Popup booth photo check",
+    desc: "Check visitor photo submissions at the popup booth and organize approved images for upload.",
+    pay: 42000,
+    status: 1,
+    applicants: [mockWorkers[0]],
+    category: { jobType: "offLine", talent: "Design", field: "Participation" },
+    location: {
+      address: "23 Hangang-daero, Yongsan-gu, Seoul",
+      detailedAddress: "1F photo booth",
+      mapX: 126.965706,
+      mapY: 37.529325,
+    },
+    endDate: "2026-07-02T23:59:00.000Z",
+    workStartDate: "2026-07-03T15:00:00.000Z",
+    workEndDate: "2026-07-03T18:00:00.000Z",
+  },
 ];
 
 export const mockUsers = [...authorUsers, ...mockWorkers];
