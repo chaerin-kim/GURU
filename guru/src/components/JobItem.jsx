@@ -220,12 +220,16 @@ const JobItem = ({ item, jobOffer, findjob }) => {
           <div>
             {item?.location?.address ? (
               <div className={style.row}>
-                <span>약속장소</span>
+                <span className={style.infoIcon} title="Location" aria-label="Location">
+                  <i className="fa-solid fa-location-dot" aria-hidden="true"></i>
+                </span>
                 <p>{newAddress}</p>
               </div>
             ) : null}
             <div className={style.row}>
-              <span>약속시간</span>
+              <span className={style.infoIcon} title="Time" aria-label="Time">
+                <i className="fa-regular fa-clock" aria-hidden="true"></i>
+              </span>
               <p>
                 {memoizedData.workStartDate?.time || "-"}
                 <span>~</span>
@@ -233,7 +237,9 @@ const JobItem = ({ item, jobOffer, findjob }) => {
               </p>
             </div>
             <div className={style.row}>
-              <span>약속 예정일</span>
+              <span className={style.infoIcon} title="Scheduled Date" aria-label="Scheduled Date">
+                <i className="fa-regular fa-calendar-check" aria-hidden="true"></i>
+              </span>
               <p>{memoizedData.workStartDate?.date || "-"}</p>
             </div>
           </div>
