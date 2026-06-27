@@ -72,6 +72,14 @@ const getCoordinateKey = (job) => {
   return `${lat.toFixed(6)},${lon.toFixed(6)}`;
 };
 
+const escapeHtml = (value = "") =>
+  String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
   const navigate = useNavigate();
   const mapContainerRef = useRef(null);
@@ -178,11 +186,13 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
     (job, userData) => {
       const root = document.createElement("div");
       root.className = styles.wrap;
+      const title = escapeHtml(job.title);
+      const address = escapeHtml(job.location?.address || "주소 정보 없음");
 
       root.innerHTML = `
         <div class="${styles.info}">
           <div class="${styles.title}">
-            <span>${job.title}</span>
+            <span class="${styles.titleText}" title="${title}">${title}</span>
             <button type="button" class="${styles.close}" aria-label="닫기">×</button>
           </div>
           <div class="${styles.body}">
@@ -190,7 +200,7 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
               <img src="${getProfileImageSrc(userData?.image)}" alt="">
             </div>
             <div class="${styles.desc}">
-              <div class="${styles.ellipsis}">${job.location?.address || "주소 정보 없음"}</div>
+              <div class="${styles.ellipsis}" title="${address}">${address}</div>
               <div class="${styles.jibun}">${formatDate(job.workStartDate)} ~ ${formatDate(job.workEndDate)}</div>
               <button type="button" class="${styles.link}" data-id="${job._id}">일자리 보기 &gt;</button>
             </div>
@@ -217,20 +227,21 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
       root.innerHTML = `
         <div class="${styles.info}">
           <div class="${styles.title}">
-            <span>총 ${jobs.length}건의 일자리</span>
+            <span class="${styles.titleText}" title="총 ${jobs.length}건의 일자리">총 ${jobs.length}건의 일자리</span>
             <button type="button" class="${styles.close}" aria-label="닫기">×</button>
           </div>
           <div class="${styles.body} ${styles.positionJob}">
             ${jobs
-              .map(
-                (job) => `
+              .map((job) => {
+                const title = escapeHtml(job.title);
+                return `
                   <div class="${styles.jobItem}">
-                    <div class="${styles.sametitle}">${job.title}</div>
+                    <div class="${styles.sametitle}" title="${title}">${title}</div>
                     <div class="${styles.samejibun}">${formatDate(job.workStartDate)} ~ ${formatDate(job.workEndDate)}</div>
                     <button type="button" class="${styles.link}" data-id="${job._id}">일자리 보기 &gt;</button>
                   </div>
-                `
-              )
+                `;
+              })
               .join("")}
           </div>
         </div>

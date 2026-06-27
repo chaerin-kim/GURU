@@ -36,6 +36,12 @@
   font-weight: bold;
   color: white;
 }
+.info .titleText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .info .close {
   width: 2.4rem;
   height: 2.4rem;
@@ -67,6 +73,7 @@
   height: 7.5rem;
 }
 .desc .ellipsis {
+  max-width: 17rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -131,6 +138,9 @@
 }
 .sametitle {
   font-size: medium;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .info .body.positionJob .jobItem:last-of-type {
   margin-bottom: 0;
