@@ -86,7 +86,6 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
   const mapRef = useRef(null);
   const markerRefs = useRef([]);
   const overlayRefs = useRef([]);
-  const clustererRef = useRef(null);
   const lastCenteredLocationRef = useRef(null);
 
   const [map, setMap] = useState(null);
@@ -150,11 +149,9 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
   const clearMapObjects = useCallback(() => {
     overlayRefs.current.forEach((overlay) => overlay.setMap(null));
     markerRefs.current.forEach((marker) => marker.setMap(null));
-    clustererRef.current?.clear?.();
 
     overlayRefs.current = [];
     markerRefs.current = [];
-    clustererRef.current = null;
   }, []);
 
   const closeAllOverlays = useCallback(() => {
@@ -368,16 +365,7 @@ const Map = ({ jobList = [], location = DEFAULT_LOCATION }) => {
       markerRefs.current = markers;
       overlayRefs.current = overlays;
 
-      if (kakao.maps.MarkerClusterer) {
-        clustererRef.current = new kakao.maps.MarkerClusterer({
-          map,
-          averageCenter: true,
-          minLevel: 6,
-        });
-        clustererRef.current.addMarkers(markers);
-      } else {
-        markers.forEach((marker) => marker.setMap(map));
-      }
+      markers.forEach((marker) => marker.setMap(map));
 
       if (markers.length === 1) {
         map.setCenter(markers[0].getPosition());
