@@ -86,7 +86,7 @@
   overflow: hidden;
 }
 .offWrap .mainMap > div,
-.offWrap .mainMap > div > div {
+.offWrap .mainMap > div > div:first-child {
   width: 100%;
   height: 100%;
 }
